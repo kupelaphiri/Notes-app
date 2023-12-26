@@ -7,11 +7,16 @@ function App() {
  
 
   return (
-    <>
-      <Navbar />
-      <Sidebar />
-      <Mainpage />
-    </>
+    
+    <div className='flex flex-col h-screen w-screen '>
+     <Navbar />
+    
+    <div className='flex flex-row flex-1 w-full'>
+     <Sidebar />
+     <Mainpage  />
+    </div>
+     
+    </div>
   )
 }
 

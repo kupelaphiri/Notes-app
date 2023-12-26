@@ -3,7 +3,7 @@ import React from 'react';
 
 function Navbar() {
   return (
-    <div className="relative">
+    <div className="">
       <div className="relative  h-[64px] w-full border-b-2">
         <div className="absolute top-[5px] left-[10px] h-[48px] w-[232px]">
           <svg className="absolute top-[12px] left-[15px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
@@ -16,7 +16,7 @@ function Navbar() {
             <span>Notify</span>
           </div>
         </div>
-        <div className="absolute flex flex-row left-[250px] top-[6px] rounded bg-slate-200 h-[47px] w-[722px] shadow-lg bg-white">
+        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-slate-200 h-[47px] w-[722px] shadow-lg">
           <svg className="absolute top-[12px] left-[15px] h-[40px] w-[40px] cursor-pointer">
             <path
               className=""
@@ -33,7 +33,7 @@ function Navbar() {
         <div className="absolute flex flex-row pt-[5px] justify-between bg-white w-[150px] h-[40px] right-[250px] top-[10px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[35px]"
+            className="cursor-pointer h-[30px]"
             version="1.1"
             viewBox="0 0 1200 1200"
           >
@@ -42,7 +42,7 @@ function Navbar() {
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[35px]"
+            className="cursor-pointer h-[30px]"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
@@ -57,7 +57,7 @@ function Navbar() {
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[35px]"
+            className="cursor-pointer h-[30px]"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
