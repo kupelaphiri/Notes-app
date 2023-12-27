@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 
-function Navbar() {
+function Navbar(props) {
   return (
     <div className="">
       <div className="relative  h-[64px] w-full border-b-2">
         <div className="absolute top-[5px] left-[10px] h-[48px] w-[232px]">
-          <svg className="absolute top-[12px] left-[15px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
+          <svg onClick={props.HandleClick} className="absolute top-[12px] left-[15px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
           </svg>
           <div className="absolute left-[50px]">
@@ -16,7 +16,7 @@ function Navbar() {
             <span>Notify</span>
           </div>
         </div>
-        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-slate-200 h-[47px] w-[722px] shadow-lg">
+        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-gray-200 h-[47px] w-[722px] shadow-lg">
           <svg className="absolute top-[12px] left-[15px] h-[40px] w-[40px] cursor-pointer">
             <path
               className=""
@@ -25,7 +25,7 @@ function Navbar() {
           </svg>
           <form className="">
             <input
-              className="absolute left-[60px] w-[650px] h-[47px] outline-none bg-slate-200"
+              className="absolute left-[60px] w-[650px] h-[47px] outline-none bg-gray-200"
               placeholder="Search"
             />
           </form>
