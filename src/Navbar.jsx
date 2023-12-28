@@ -4,19 +4,24 @@ import React from 'react';
 function Navbar(props) {
   return (
     <div className="">
-      <div className="relative  h-[64px] w-full border-b-2">
-        <div className="absolute top-[5px] left-[10px] h-[48px] w-[232px]">
-          <svg onClick={props.HandleClick} className="absolute top-[12px] left-[15px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
+      <div className="flex flex-row  h-[64px] w-full border-b-2">
+        <div className="flex mt-[5px] ml-[10px] h-[48px] w-[232px]">
+          
+            <div className='flex flex-row items-center h-[48px] w-[48px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
+          <svg onClick={props.HandleClick} className="mt-[5px] pl-[5px] mb-[5px] ml-[8px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
           </svg>
-          <div className="absolute left-[50px]">
-            <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />
           </div>
-          <div className="absolute left-[110px] top-[12px]">
+          
+          
+          <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />
+          <div className="pl-[20px] pt-[12px]">
             <span>Notify</span>
           </div>
+          
+         
         </div>
-        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-gray-200 h-[47px] w-[722px] shadow-lg">
+        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-gray-100 h-[47px] w-[722px]">
           <svg className="absolute top-[12px] left-[15px] h-[40px] w-[40px] cursor-pointer">
             <path
               className=""
@@ -25,7 +30,7 @@ function Navbar(props) {
           </svg>
           <form className="">
             <input
-              className="absolute left-[60px] w-[650px] h-[47px] outline-none bg-gray-200"
+              className="absolute left-[60px] w-[650px] h-[47px] outline-none bg-gray-100"
               placeholder="Search"
             />
           </form>

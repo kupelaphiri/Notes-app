@@ -1,8 +1,11 @@
 import './App.css'
+import Archivepage from './Archivepage'
 import Mainpage from './Mainpage'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Trashpage from './Trashpage'
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -15,15 +18,22 @@ function App() {
 
   return (
     
-    <div className='flex flex-col h-screen w-screen overflow-hidden'>
+ <div className='flex flex-col h-screen w-screen overflow-hidden'>
      <Navbar HandleClick={HandleClick} />
-    
     <div className='flex flex-row flex-1 w-full h-full'>
+     <div className='flex flex-row h-full'>
       <Sidebar isOpen={isOpen} />
-     <Mainpage  />
+     </div>
+     <Routes>
+       <Route index path='/' element={<Mainpage  />} />
+       <Route path='/archivepage' element={<Archivepage />} />
+       <Route path='/trashpage' element={<Trashpage />} />
+      
+     </Routes>
+    {/* <Mainpage  /> */}
     </div>
      
-    </div>
+ </div>
   )
 }
 
