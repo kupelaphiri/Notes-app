@@ -4,11 +4,11 @@ import React from 'react';
 function Navbar(props) {
   return (
     <div className="">
-      <div className="flex flex-row  h-[64px] w-full border-b-2">
+      <div className="flex flex-row  h-[64px] w-full border-b-[1px]">
         <div className="flex mt-[5px] ml-[10px] h-[48px] w-[232px]">
           
-            <div className='flex flex-row items-center h-[48px] w-[48px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
-          <svg onClick={props.HandleClick} className="mt-[5px] pl-[5px] mb-[5px] ml-[8px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
+            <div onClick={props.HandleClick} className='flex flex-row items-center h-[48px] w-[48px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
+          <svg className="mt-[5px] pl-[5px] mb-[5px] ml-[8px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
           </svg>
           </div>

@@ -41,11 +41,11 @@ const isPathSelected = (path) => {
   return (
     <div  className={`flex flex-col h-full shrink-0 pt-3 ${isOpen? 'w-[280px]' : 'pl-[12px]'} `}>
      {sidebarOptions.map((option) => {
-      return ( <div onClick={() => {HandleNavigate(option.path)}} key={sidebarOptions.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${isOpen? 'rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
+      return ( <div onClick={() => {HandleNavigate(option.path)}} key={option.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${isOpen? 'rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
       <div className='px-[12px]'>
        {option.icon}
        </div>
-       {isOpen && <p className='ml-[20px]'>{option.title}</p>}
+       {isOpen && <p className='ml-[20px] text-sm font-semibold'>{option.title}</p>}
       </div>)})}
     </div>
   )
