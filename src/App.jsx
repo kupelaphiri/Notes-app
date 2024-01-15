@@ -32,7 +32,7 @@ function App() {
      <Routes>
        <Route index path='/' element={<Mainpage isOn={isOn} />} />
        <Route path='/archivepage' element={<Archivepage />} />
-       <Route path='/trashpage' element={<Trashpage />} />
+       <Route path='/trashpage' element={<Trashpage isOn={isOn}/>} />
       
      </Routes>
     {/* <Mainpage  /> */}

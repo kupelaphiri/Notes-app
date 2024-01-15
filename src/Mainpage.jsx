@@ -38,7 +38,15 @@ function Mainpage({isOn}) {
       body: JSON.stringify({
         noteid: id
       }),
-     }).then((res)=> res.json())
+     }).then(async(res)=> {
+     const respond = await res.json()
+     console.log('Delete', respond);
+     setBackendPinnedData((prev)=>{
+       const newArr = [...prev]
+         newArr.shift()
+         return newArr
+     })})
+    
     }
   
 
@@ -95,9 +103,13 @@ function Mainpage({isOn}) {
 
 
   useEffect(() => {
-    fetch('http://localhost:5000/all-notes').then(res => res.json())
-    .then(notes => setBackendPinnedData(notes))
+   
+      fetch('http://localhost:5000/all-notes').then(res => res.json())
+      .then(notes => setBackendPinnedData(notes))
+    
+   
   }, [])
+
 
   // useEffect(() => {
   //   fetch('http://localhost:5000/api/other').then(res => res.json())
