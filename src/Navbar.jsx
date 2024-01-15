@@ -44,8 +44,10 @@ function Navbar(props) {
           >
             <path d="m1e3 475v-250l-87.5 87.5c-77.5-85-190-137.5-312.5-137.5-235 0-425 190-425 425s190 425 425 425c120 0 227.5-50 305-130l-70-72.5c-57.5 62.5-142.5 102.5-235 102.5-180 0-325-145-325-325s145-325 325-325c95 0 182.5 42.5 242.5 107.5l-92.5 92.5z" />
           </svg>
-
+      
+        
           <svg
+          onClick={props.portraitView}
             xmlns="http://www.w3.org/2000/svg"
             className="cursor-pointer h-[30px]"
             fill="none"
@@ -59,6 +61,7 @@ function Navbar(props) {
               d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
             />
           </svg>
+         
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
