@@ -31,7 +31,7 @@ function App() {
      </div>
      <Routes>
        <Route index path='/' element={<Mainpage isOn={isOn} />} />
-       <Route path='/archivepage' element={<Archivepage />} />
+       <Route path='/archivepage' element={<Archivepage isOn={isOn} />} />
        <Route path='/trashpage' element={<Trashpage isOn={isOn}/>} />
       
      </Routes>
