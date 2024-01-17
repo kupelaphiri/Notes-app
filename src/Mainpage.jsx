@@ -2,9 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useUtilities } from './hooks/useOutsideClickDetector';
 import { json } from 'react-router-dom';
+import Masonry from 'react-masonry-css';
+import './Mainpage.css'
 
 
-function Mainpage({isOn}) {
+function Mainpage({isOn, isOpen}) {
   const [isActive, setIsActive] = useState(false);
   const [backendPinnedData, setBackendPinnedData] = useState([{}])
   const [backendOtherData, setBackendOtherData] = useState([{}])
@@ -30,7 +32,19 @@ function Mainpage({isOn}) {
   const changeBody = event => {
     setBody(event.target.value)
   }
-   
+
+  const breakpointColumnsObj = {
+    default: 7,
+    1831: 6,
+    1600: 5,
+    1560: 4,
+    1307: 3,
+    1033: 2,
+    792: 1
+  };
+  
+ 
+
   //moves the note to trash
   const deleteNote = (id) => {
     console.log('id', id);
@@ -106,7 +120,7 @@ function Mainpage({isOn}) {
      console.log('wababade', response);
       setBackendPinnedData((prev) => {
         const newArr = [...prev]
-          newArr.push(response)
+          newArr.unshift(response)
           return newArr
       })
       console.log('new note added');
@@ -157,13 +171,18 @@ function Mainpage({isOn}) {
         </div>
       </div>
 
-      <div className="flex flex-col w-full pr-2 h-full">
+      <div className="flex flex-col w-full h-full overflow-visible">
         <p className='text-xs font-bold pl-[20px]'>PINNED</p>
-        <div className={`flex h-full w-full pl-[15px]  ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline overflow-visible pr-[5px]`}>
+        <div className={`flex w-full pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline overflow-visible`}>
+        <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className={`my-masonry-grid pl-10`}
+        columnClassName='ny-masonry-grid-column'
+        >
           {backendPinnedData.map((note) => {
             return (
              
-                <div key={note.id} className={`w-[280px] min-h-24 max-h-[452px] overflow-visible border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
+                <div key={note.id} className={`w-[240px] min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
                   <h2>{note.title}</h2>
                   <p>{note.body}</p>
                   <div className='flex flex-row-reverse w-full justify-start pr-2'>
@@ -182,6 +201,7 @@ function Mainpage({isOn}) {
           })}
          
           
+        </Masonry>
         </div>
        {/* <p className='text-xs font-bold pl-[20px]'>OTHERS</p> */}
 

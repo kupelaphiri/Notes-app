@@ -30,7 +30,7 @@ function App() {
       <Sidebar isOpen={isOpen} />
      </div>
      <Routes>
-       <Route index path='/' element={<Mainpage isOn={isOn} />} />
+       <Route index path='/' element={<Mainpage isOn={isOn} isOpen={isOpen} />} />
        <Route path='/archivepage' element={<Archivepage isOn={isOn} />} />
        <Route path='/trashpage' element={<Trashpage isOn={isOn}/>} />
       
