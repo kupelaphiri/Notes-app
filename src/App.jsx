@@ -24,19 +24,24 @@ function App() {
   return (
     
  <div className='flex flex-col h-screen w-screen overflow-hidden'>
+
+    
      <Navbar HandleClick={HandleClick} portraitView={portraitView} />
     <div className='flex flex-row flex-1 w-full h-full'>
      <div className='flex flex-row h-full'>
       <Sidebar isOpen={isOpen} />
      </div>
      <Routes>
-       <Route index path='/' element={<Mainpage isOn={isOn} isOpen={isOpen} />} />
+      
+       <Route path='/' element={<Mainpage isOn={isOn} isOpen={isOpen} />} />
        <Route path='/archivepage' element={<Archivepage isOn={isOn} />} />
        <Route path='/trashpage' element={<Trashpage isOn={isOn}/>} />
       
      </Routes>
     {/* <Mainpage  /> */}
     </div>
+    
+   
      
  </div>
   )

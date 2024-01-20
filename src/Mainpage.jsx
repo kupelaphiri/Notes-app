@@ -13,6 +13,7 @@ function Mainpage({isOn, isOpen}) {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
   
+  
   const InputRef = useRef(null);
   const { useOutsideClickDetector } = useUtilities();
  
@@ -43,7 +44,7 @@ function Mainpage({isOn, isOpen}) {
     792: 1
   };
   
- 
+  
 
   //moves the note to trash
   const deleteNote = (id) => {
@@ -107,15 +108,19 @@ function Mainpage({isOn, isOpen}) {
   useOutsideClickDetector(InputRef, unfocus);
 
   const handleSubmit = (e) => {
-   e.preventDefault();
+   if (e)e.preventDefault();
     const note = { title:title.trim(), body };
-    console.log(title)
+    console.log(note)
+    // setTitle('')
+    // setBody('')
     
     fetch('http://localhost:5000/add-note', {
       method: 'POST',
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(note)
     }).then(async(res) => {
+      try {
+        console.log(res);
      const response =  await res.json()
      console.log('wababade', response);
       setBackendPinnedData((prev) => {
@@ -124,6 +129,9 @@ function Mainpage({isOn, isOpen}) {
           return newArr
       })
       console.log('new note added');
+    }catch (error) {
+      console.log(error);
+    }
       
     })
   }
@@ -146,7 +154,7 @@ function Mainpage({isOn, isOpen}) {
   
 
   return (
-    <div className="h-full w-full overflow-y-auto">
+    <div className="h-full w-full overflow-y-auto flex-1 shrink-0">
       <div className="flex justify-center w-full">
         <div
           ref={InputRef}          
@@ -158,6 +166,7 @@ function Mainpage({isOn, isOpen}) {
               isActive ? 'block' : 'hidden'
             } outline-none`}
             placeholder="Title"
+            value={title}
            
           />
           <input
@@ -165,15 +174,16 @@ function Mainpage({isOn, isOpen}) {
             onFocus={focus}
             className={`w-[400px] h-[42px] outline-none placeholder-black`}
             placeholder="Take a note..."
+            value={body}
           />
           <button onClick={handleSubmit} className={`${isActive? 'block' : 'hidden'} w-[80px] p-[10px] ml-[50px] hover:bg-gray-100`}>Ok</button>
           <button onClick={unfocus} className={`${isActive? 'block' : 'hidden'} w-[80px] p-[10px] ml-[480px] hover:bg-gray-100`}>Close</button>
         </div>
       </div>
 
-      <div className="flex flex-col w-full h-full overflow-visible">
+      <div className="flex flex-col w-full h-full flex-1">
         <p className='text-xs font-bold pl-[20px]'>PINNED</p>
-        <div className={`flex w-full pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline overflow-visible`}>
+        <div className={`flex w-full pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline flex-1`}>
         <Masonry
         breakpointCols={breakpointColumnsObj}
         className={`my-masonry-grid pl-10`}
@@ -182,7 +192,7 @@ function Mainpage({isOn, isOpen}) {
           {backendPinnedData.map((note) => {
             return (
              
-                <div key={note.id} className={`w-[240px] min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
+                <div key={note.id} className={`flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
                   <h2>{note.title}</h2>
                   <p>{note.body}</p>
                   <div className='flex flex-row-reverse w-full justify-start pr-2'>
