@@ -30,12 +30,12 @@ function Navbar(props) {
           </svg>
           <form className="">
             <input
-              className="absolute left-[60px] w-[650px] h-[47px] outline-none bg-gray-100"
+              className=" pl-[60px] mt-[15px] w-[650px] h-[47px] outline-none bg-gray-100"
               placeholder="Search"
             />
           </form>
         </div>
-        <div className="absolute flex flex-row pt-[5px] justify-between bg-white w-[150px] h-[40px] right-[250px] top-[10px]">
+        <div className=" flex flex-row pt-[5px] justify-between bg-white w-[150px] h-[40px] lg:ml-[900px] ml-[800px] mt-[10px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="cursor-pointer h-[30px]"

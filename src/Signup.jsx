@@ -43,6 +43,30 @@ function Signup() {
     useEffect(() => {
         setErrMsg('');
     }, [user, pwd, matchPwd])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const userDetails = {name: user.trim(), password: pwd.trim() }
+        setSuccess(true)
+        console.log(userDetails)
+
+    // fetch('http://localhost:5000/add-user', {
+    //   method: 'POST',
+    //   headers: { "Content-type": "application/json" },
+    //   body: JSON.stringify(userDetails)
+    // }).then(async(res) => {
+    //     try {
+    //       console.log(res);
+    //    const response =  await res.json()
+    //    console.log('wababade', response);
+    
+    //     console.log('new user added');
+    //   }catch (error) {
+    //     console.log(error);
+    //   }
+        
+    //   })
+    }
     
   return (
     <div className='flex justify-center items-center h-screen w-screen overflow-hidden bg-blue-500'>
@@ -134,13 +158,13 @@ function Signup() {
                             Must match the first password input field.
                         </p>
 
-                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+                        <button onClick={handleSubmit}  disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
                          </form>
                          <p>
                         Already signed up?<br />
                         <span className="line">
                             {/*put router link here*/}
-                            <a href="#">Sign In</a>
+                            <a href="#" className='underline'>Sign In</a>
                         </span>
                     </p>
                         </section>
