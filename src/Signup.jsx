@@ -5,6 +5,7 @@ import './Signup.css'
 
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 function Signup() {
@@ -15,6 +16,10 @@ function Signup() {
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
+
+    const [email, setEmail] = useState('')
+    const [validEmail, setValidEmail] = useState(false)
+    const [emailFocus, setEmailFocus] = useState(false)
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -35,6 +40,10 @@ function Signup() {
         setValidName(USER_REGEX.test(user));
     }, [user])
 
+    useEffect(()=>{
+        setValidEmail(EMAIL_REGEX.test(email))
+    }, [email])
+
     useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
         setValidMatch(pwd === matchPwd);
@@ -46,26 +55,26 @@ function Signup() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const userDetails = {name: user.trim(), password: pwd.trim() }
+        const userDetails = {name: user.trim(), email: email.trim(), password: pwd.trim() }
         setSuccess(true)
         console.log(userDetails)
 
-    // fetch('http://localhost:5000/add-user', {
-    //   method: 'POST',
-    //   headers: { "Content-type": "application/json" },
-    //   body: JSON.stringify(userDetails)
-    // }).then(async(res) => {
-    //     try {
-    //       console.log(res);
-    //    const response =  await res.json()
-    //    console.log('wababade', response);
+    fetch('http://localhost:5000/add-user', {
+      method: 'POST',
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(userDetails)
+    }).then(async(res) => {
+        try {
+          console.log(res);
+       const response =  await res.json()
+       console.log('wababade', response);
     
-    //     console.log('new user added');
-    //   }catch (error) {
-    //     console.log(error);
-    //   }
+        console.log('new user added');
+      }catch (error) {
+        console.log(error);
+      }
         
-    //   })
+      })
     }
     
   return (
@@ -111,6 +120,32 @@ function Signup() {
                             Must begin with a letter.<br />
                             Letters, numbers, underscores, hyphens allowed.
                         </p>
+
+                        <label htmlFor="email">
+                            Email:
+                            <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+                        </label>
+                        <input
+                            type="text"
+                            id="email"
+                            className='txt-color'
+                            autoComplete="off"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                            aria-invalid={validEmail ? "false" : "true"}
+                            aria-describedby="uidnote"
+                            onFocus={() => setEmailFocus(true)}
+                            onBlur={() => setEmailFocus(false)}
+                        />
+                        <p id="uidnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            Email must be of vaid format<br />
+                            Must look like email@example.com.
+                           </p>
+
+
 
                         <label htmlFor="password">
                             Password:

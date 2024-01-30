@@ -2,7 +2,7 @@ import React from 'react';
 import { useRef, useState, useEffect, useContext } from 'react';
 import './Signup.css'
 import AuthContext from './context/AuthProvide';
-// import axios from './api/axios';
+import axios from './api/axios';
 
 function Loginpage() {
     const { setAuth } = useContext(AuthContext)
@@ -13,6 +13,8 @@ function Loginpage() {
    const [pwd, setPwd] = useState('')
    const [errMsg, setErrMsg] = useState('')
    const [success, setSuccess] = useState(false)
+   const [loginMsg, setLoginMsg] = useState('')
+   const [failedLogin, setFailedLogin] = useState('')
 
    useEffect(()=>{
     userRef.current.focus();
@@ -24,17 +26,63 @@ function Loginpage() {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(user, pwd);
-      setUser('')
-      setPwd('')
-      setSuccess(true)
+      try {
+        const loginDetails = {email: user.trim(), password: pwd.trim() }
+        console.log('details', loginDetails);
+        setAuth(loginDetails);
+       
+        
+  
+        fetch('http://localhost:5000/auth', {
+          method: 'POST',
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(loginDetails)
+        }).then(async(res) => {
+          try {
+            console.log(res);
+         const response =  await res.json()
+        
+         console.log('yoohoo', response);
+         if (res.ok) {
+           setUser('')
+           setPwd('')
+           setLoginMsg(response)
+           setSuccess(true) 
+
+         } else {
+          setFailedLogin(response)
+          setSuccess(false)
+         }
+      
+         
+        }catch (error) {
+          console.log(error);
+          setSuccess(false)
+        }
+          
+        })
+        
+      } catch (error) {
+        if (!error?.response) {
+            setErrMsg('No server response')
+
+        } else if (error.response?.status === 500){
+            setErrMsg('Missing Email or Password')
+        } else if (error.response?.status === 401){
+            setErrMsg('Unauthorised')
+        } else {
+            setErrMsg('Login failed')
+        }
+      }
+     
    }
 
   return (
     <div className='flex justify-center items-center bg-blue-500 h-[100vh]'>
     {success ? (
         <section>
-            <h1>You are logged in!</h1>
+            <h1>{loginMsg}</h1>
+            
             <br />
             <p>
                 <a href="#">Go to Home</a>
@@ -42,10 +90,14 @@ function Loginpage() {
         </section>
     ) : (
         <section>
+          
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <h1>Sign In</h1>
+            <div className='w-full bg-red-600 text-xs'>
+            <h1>{failedLogin}</h1>
+            </div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                     type="text"
                     id="username"
