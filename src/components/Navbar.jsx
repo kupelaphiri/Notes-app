@@ -1,7 +1,39 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import React, { useEffect } from 'react';
+import useAuth from '../hooks/useOutsideClickDetector/useAuth';
+import { useLocation, Navigate } from "react-router-dom";
+import RootLayout from '../Layout/RootLayout';
+
 
 function Navbar(props) {
+ const { auth, setAuth } = useAuth()
+ const location = useLocation();
+
+
+  const logout = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/logout", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        withCredentials: true,
+        credentials: "include",
+      });
+  
+      const response = await res.json()
+
+      if (res.ok) {
+        setAuth(null)
+        console.log('auth', auth);
+        window.location.reload();
+       
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+ 
   return (
     <div className="">
       <div className="flex flex-row  h-[64px] w-full border-b-[1px]">
@@ -35,10 +67,10 @@ function Navbar(props) {
             />
           </form>
         </div>
-        <div className=" flex flex-row pt-[5px] justify-between bg-white w-[150px] h-[40px] lg:ml-[900px] ml-[800px] mt-[10px]">
+        <div className=" flex flex-row pt-[5px] justify-between items-center bg-white w-[150px] h-[40px] lg:ml-[900px] ml-[780px] mt-[10px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[30px]"
+            className="cursor-pointer h-[23px]"
             version="1.1"
             viewBox="0 0 1200 1200"
           >
@@ -49,7 +81,7 @@ function Navbar(props) {
           <svg
           onClick={props.portraitView}
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[30px]"
+            className="cursor-pointer h-[23px]"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
@@ -65,7 +97,7 @@ function Navbar(props) {
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer h-[30px]"
+            className="cursor-pointer h-[23px]"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
@@ -82,6 +114,12 @@ function Navbar(props) {
               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
           </svg>
+        </div>
+        <div onClick={logout} className='flex ml-[70px] cursor-pointer justify-center items-center'>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+        </svg>
+
         </div>
       </div>
     </div>

@@ -159,7 +159,7 @@ function Mainpage({isOn, isOpen}) {
   
 
   return (
-    <div className="h-full w-full overflow-y-auto flex-1 shrink-0">
+    <div className="h-screen items-stretch w-full overflow-y-auto flex-1 shrink-0 bg-green-500">
       <div className="flex justify-center w-full">
         <div
           ref={InputRef}          
@@ -186,9 +186,9 @@ function Mainpage({isOn, isOpen}) {
         </div>
       </div>
 
-      <div className="flex flex-col w-full h-full flex-1">
-        <p className='text-xs font-bold pl-[20px]'>PINNED</p>
-        <div className={`flex w-full pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline flex-1`}>
+      {/* <div className="flex flex-col w-full h-full flex-1 bg-red-500">
+        <p className='text-xs font-bold pl-[20px]'>PINNED</p> */}
+        <div className={`flex w-full items-stretch bg-blue-500 pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'}  flex-1`}>
         <Masonry
         breakpointCols={breakpointColumnsObj}
         className={`my-masonry-grid pl-10`}
@@ -198,8 +198,8 @@ function Mainpage({isOn, isOpen}) {
             return (
              
                 <div key={note.id} className={`flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
-                  <h2>{note.title}</h2>
-                  <p>{note.body}</p>
+                  <h2 className='font-bold'>{note.title}</h2>
+                  <p className='text-xs'>{note.body}</p>
                   <div className='flex flex-row-reverse w-full justify-start pr-2'>
                   <svg onClick={()=>deleteNote(note._id)} className="w-[20px] mt-[20px] ml-[2px] cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                    <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
@@ -232,7 +232,7 @@ function Mainpage({isOn, isOpen}) {
        </div> */}
        
       </div>
-    </div>
+    // </div>
   );
 }
 
