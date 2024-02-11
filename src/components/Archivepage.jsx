@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import Masonry from 'react-masonry-css';
+import './Mainpage.css'
 
 function Archivepage({isOn}) {
 
@@ -11,9 +13,24 @@ function Archivepage({isOn}) {
     
   })
 
+  const breakpointColumnsObj = {
+    default: 7,
+    1831: 6,
+    1600: 5,
+    1560: 4,
+    1307: 3,
+    1033: 2,
+    792: 1
+  };
+
   return (
     <div className="h-full w-full overflow-y-auto">
             <div className={`flex h-full w-full pl-[15px]  ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline overflow-visible pr-[5px]`}>
+            <Masonry
+               breakpointCols={breakpointColumnsObj}
+               className={`my-masonry-grid pl-10`}
+               columnClassName='ny-masonry-grid-column'
+        >
        {archivedNotes.map((note) => {
             return (
              
@@ -34,6 +51,7 @@ function Archivepage({isOn}) {
              
             );
           })}
+          </Masonry>
        </div>
     </div>
   )

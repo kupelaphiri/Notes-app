@@ -1,11 +1,17 @@
 import React from 'react';
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Signup.css'
-import AuthContext from './context/AuthProvide';
-import axios from './api/axios';
+import useAuth from '../hooks/useOutsideClickDetector/useAuth';
+import Cookies from 'js-cookie';
 
 function Loginpage() {
-    const { setAuth } = useContext(AuthContext)
+   const { setAuth } = useAuth();
+   const navigate = useNavigate()
+   const location = useLocation()
+   const from = location.state?.from?.pathname || '/'
+
+
    const userRef = useRef()
    const errRef = useRef()
 
@@ -36,28 +42,35 @@ function Loginpage() {
         fetch('http://localhost:5000/auth', {
           method: 'POST',
           headers: { "Content-type": "application/json" },
+          withCredentials: true,
+          credentials: 'include',
           body: JSON.stringify(loginDetails)
         }).then(async(res) => {
           try {
-            console.log(res);
+            
          const response =  await res.json()
         
          console.log('yoohoo', response);
          if (res.ok) {
-           setUser('')
-           setPwd('')
-           setLoginMsg(response)
-           setSuccess(true) 
+          const cookie = Cookies.get('seddfcfcfcfcfcgygytrerrer')
+          console.log(cookie);
+           setUser('');
+           setPwd('');
+           setLoginMsg(response);
+           navigate(from, { replace: true });
+           setAuth(response)
+           
+          
 
          } else {
           setFailedLogin(response)
-          setSuccess(false)
+          
          }
       
          
         }catch (error) {
           console.log(error);
-          setSuccess(false)
+         
         }
           
         })
@@ -79,16 +92,7 @@ function Loginpage() {
 
   return (
     <div className='flex justify-center items-center bg-blue-500 h-[100vh]'>
-    {success ? (
-        <section>
-            <h1>{loginMsg}</h1>
-            
-            <br />
-            <p>
-                <a href="#">Go to Home</a>
-            </p>
-        </section>
-    ) : (
+   
         <section>
           
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
@@ -128,7 +132,6 @@ function Loginpage() {
                 </span>
             </p>
         </section>
-    )}
 </div>
   )
 }

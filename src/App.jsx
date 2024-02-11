@@ -1,12 +1,5 @@
 import './App.css'
-import Archivepage from './Archivepage'
-import Mainpage from './Mainpage'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import { useState } from 'react'
 import { Routes, Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom'
-import Trashpage from './Trashpage'
-import RootLayout from './Layout/RootLayout'
 import AppRoutes from './AppRoutes'
 
 function App() {

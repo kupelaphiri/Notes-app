@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useRef, useState } from 'react';
-import { useUtilities } from './hooks/useOutsideClickDetector';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useUtilities } from '../hooks/useOutsideClickDetector';
 import { json } from 'react-router-dom';
 import Masonry from 'react-masonry-css';
 import './Mainpage.css'
@@ -24,6 +24,7 @@ function Mainpage({isOn, isOpen}) {
   const unfocus = () => {
     setIsActive(false);
     handleSubmit()
+
   };
 
   const changeTitle = event => {
@@ -103,43 +104,47 @@ function Mainpage({isOn, isOpen}) {
   //       };
   
 
+  
 
 
   useOutsideClickDetector(InputRef, unfocus);
 
-  const handleSubmit = (e) => {
-   if (e)e.preventDefault();
-    const note = { title:title.trim(), body };
-    console.log(note)
-    // setTitle('')
-    // setBody('')
-    
-    fetch('http://localhost:5000/add-note', {
-      method: 'POST',
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify(note)
-    }).then(async(res) => {
-      try {
-        console.log(res);
-     const response =  await res.json()
-     console.log('wababade', response);
-      setBackendPinnedData((prev) => {
-        const newArr = [...prev]
-          newArr.unshift(response)
-          return newArr
-      })
-      console.log('new note added');
-    }catch (error) {
-      console.log(error);
-    }
-      
+ const handleSubmit = useCallback((e)=>{
+  if (e)e.preventDefault();
+  const note = { title:title.trim(), body: body.trim() };
+  console.log(note)
+  // setTitle('')
+  // setBody('')
+  
+  fetch('http://localhost:5000/add-note', {
+    method: 'POST',
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(note)
+  }).then(async(res) => {
+    try {
+      console.log(res);
+   const response =  await res.json()
+   console.log('wababade', response);
+    setBackendPinnedData((prev) => {
+      const newArr = [...prev]
+        newArr.unshift(response)
+        return newArr
     })
+    console.log('new note added');
+  }catch (error) {
+    console.log(error);
   }
+    
+  })
+ }, [title, body])
+
 
 
   useEffect(() => {
+    
    
       fetch('http://localhost:5000/all-notes').then(res => res.json())
+      
       .then(notes => setBackendPinnedData(notes))
     
    

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Masonry from 'react-masonry-css';
+import './Mainpage.css'
 
 
 
@@ -35,6 +37,16 @@ const permanentDelete = (id) => {
   })
 }
 
+const breakpointColumnsObj = {
+  default: 7,
+  1831: 6,
+  1600: 5,
+  1560: 4,
+  1307: 3,
+  1033: 2,
+  792: 1
+};
+
 const deleteAll = () => {
   fetch('http://localhost:5000/delete-all', {
     method: 'POST',
@@ -49,6 +61,11 @@ const deleteAll = () => {
         <p>Notes in Trash are deleted after 7 days.</p>
         <button onClick={deleteAll} className='pl-10'>Empty Trash</button>
        </div>
+       <Masonry 
+       breakpointCols={breakpointColumnsObj}
+       className={`my-masonry-grid pl-10`}
+       columnClassName='ny-masonry-grid-column'
+       >
        <div className={`flex h-full w-full pl-[15px]  ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} items-baseline overflow-visible pr-[5px]`}>
        {deletedNotes.map((note) => {
             return (
@@ -71,6 +88,7 @@ const deleteAll = () => {
             );
           })}
        </div>
+          </Masonry>
 
     </div>
   )
