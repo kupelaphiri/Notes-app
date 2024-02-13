@@ -28,3 +28,20 @@
       margin-bottom: 15px; /* space between items */
     }
   }
+
+  textarea::-webkit-scrollbar{
+    width: 0;
+  }
+
+  /* .hidden-content {
+    display: none;
+  } */
+
+  .hover-trigger:hover + .hidden-content {
+    display: flex;
+    background-color: gray;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    padding-right: 0.5rem;
+  }
