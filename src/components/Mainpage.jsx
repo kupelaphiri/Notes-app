@@ -2,16 +2,22 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useUtilities } from '../hooks/useOutsideClickDetector';
 import { json } from 'react-router-dom';
+import Modal from './Modal';
 import Masonry from 'react-masonry-css';
 import './Mainpage.css'
+import autosize from 'autosize';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 
-function Mainpage({isOn, isOpen}) {
+
+function Mainpage({isOn}) {
   const [isActive, setIsActive] = useState(false);
   const [backendPinnedData, setBackendPinnedData] = useState([{}])
   const [backendOtherData, setBackendOtherData] = useState([{}])
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+  const [open, setOpen] = useState(false)
+  const [modalData, setModalData] = useState(null)
   
   
   const InputRef = useRef(null);
@@ -34,6 +40,15 @@ function Mainpage({isOn, isOpen}) {
   const changeBody = event => {
     setBody(event.target.value)
   }
+
+  const handleClose = () => {
+    setOpen(false);
+};
+
+// const handleOpen = (data) => {
+//   setModalData(data)  
+//   setOpen(true);
+// };
 
   const breakpointColumnsObj = {
     default: 7,
@@ -157,14 +172,19 @@ function Mainpage({isOn, isOpen}) {
   //   .then(data => setBackendOtherData(data))
   // }) 
   
+  useEffect(()=> {
+    console.log('modalData', modalData);
+    console.log('open', open)
+  }, [modalData, open])
   
 
   return (
+    <>
     <div className="h-screen flex flex-col w-full min-h-full overflow-y-auto pb-[100px] flex-1 shrink-0">
       <div className="flex justify-center w-full">
         <div
           ref={InputRef}          
-          className={`flex flex-col m-8  ${isActive ? 'min-h-[136px] max-h-[300px]' : 'h-[46px]' } bg-white w-[598px] border rounded-lg pl-5 shadow-lg`}
+          className={`flex flex-col m-8  ${isActive ? 'min-h-[136px]' : 'h-[46px]' } bg-white w-[598px] border rounded-lg pl-5 shadow-lg`}
         >
           <input
           onChange={changeTitle}
@@ -175,7 +195,7 @@ function Mainpage({isOn, isOpen}) {
             value={title}
            
           />
-          <textarea
+          <TextareaAutosize
           
           onChange={changeBody}
             onFocus={focus}
@@ -183,7 +203,7 @@ function Mainpage({isOn, isOpen}) {
             className={`w-[400px] h-auto outline-none resize-none ${isActive? '': 'mt-1'} placeholder-black`}
             placeholder="Take a note..."
            
-          >{body}</textarea>
+          >{body}</TextareaAutosize>
           
           <button onClick={handleSubmit} className={`${isActive? 'block' : 'hidden'} w-[80px] p-[10px] ml-[480px] hover:bg-gray-100`}>Ok</button>
         </div>
@@ -199,8 +219,13 @@ function Mainpage({isOn, isOpen}) {
         >
           {backendPinnedData.map((note) => {
             return (
+              <>
              
-                <div key={note.id} className={`flex flex-col hover-trigger flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`}>
+                <div key={note.id} className={`flex flex-col hover-trigger flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`} 
+                    onClick={()=> {
+                    setModalData(note);
+                    setOpen(true);
+                  }}>
                   <h2 className='font-bold'>{note.title}</h2>
                   <p className='text-xs'>{note.body}</p>
                   <div className='flex flex-row w-full justify-start pr-2'>
@@ -214,13 +239,26 @@ function Mainpage({isOn, isOpen}) {
                  </div>
 
                 </div>
-             
+                
+                
+                
+             </>
             );
           })}
          
           
         </Masonry>
         </div>
+        
+       { open === true && <Modal isOpen={open}>
+                    <input value={modalData.title}/>
+                    <TextareaAutosize className='w-full outline-none text-xs'>{modalData.body}</TextareaAutosize>
+                    {/* <textarea className='h-full'></textarea> */}
+                   <div className='flex flex-row sticky w-full bg-red-500'>
+                    <button onClick={()=>{setOpen(false)}}>Close</button>
+                    <button className='ml-[500px]'>Edit</button>
+                   </div>
+        </Modal> }
        {/* <p className='text-xs font-bold pl-[20px]'>OTHERS</p> */}
 
         {/* <div className='flex flex-row h-[500px] flex-wrap pl-[15px] mb-10 overflow-hidden items-baseline pr-[5px]'>
@@ -236,6 +274,8 @@ function Mainpage({isOn, isOpen}) {
        
       {/* </div> */}
     </div>
+    
+    </>
   );
 }
 

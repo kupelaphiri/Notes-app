@@ -5,6 +5,10 @@ import './Signup.css'
 import useAuth from '../hooks/useOutsideClickDetector/useAuth';
 import Cookies from 'js-cookie';
 
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
 function Loginpage() {
    const { setAuth } = useAuth();
    const navigate = useNavigate()
@@ -18,13 +22,17 @@ function Loginpage() {
    const [user, setUser] = useState('')
    const [pwd, setPwd] = useState('')
    const [errMsg, setErrMsg] = useState('')
-   const [success, setSuccess] = useState(false)
+   const [validEmail, setValidEmail] = useState(false)
    const [loginMsg, setLoginMsg] = useState('')
    const [failedLogin, setFailedLogin] = useState('')
 
    useEffect(()=>{
     userRef.current.focus();
    }, [])
+
+  //  useEffect(()=> {
+  //   setUser(EMAIL_REGEX.test(user))
+  //  }, [user])
 
    useEffect(()=>{
     setErrMsg('')
