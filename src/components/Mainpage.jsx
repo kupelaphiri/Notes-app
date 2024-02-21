@@ -18,6 +18,8 @@ function Mainpage({isOn}) {
   const [body, setBody] = useState('')
   const [open, setOpen] = useState(false)
   const [modalData, setModalData] = useState(null)
+  const [modalTitle, setModalTitle] = useState(null)
+  const [modalBody, setModalBody] = useState(null)
   
   
   const InputRef = useRef(null);
@@ -40,6 +42,13 @@ function Mainpage({isOn}) {
   const changeBody = event => {
     setBody(event.target.value)
   }
+
+  const changeField = (title, value) => {
+    let newTitle = modalData.title + title
+    console.log('newTitle', newTitle)
+    newTitle = value;
+    // setTitle(newTitle);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -118,6 +127,34 @@ function Mainpage({isOn}) {
   //     //   })
   //       };
   
+ const editNote = useCallback((e)=> {
+  e.preventDefault()
+  const noteid = modalData._id
+  console.log('noteid', noteid);
+  const {title, body} = {title: modalTitle, body: modalBody}
+      console.log('note', title, body);
+
+      fetch('http://localhost:5000/edit-note', {
+        method: 'PUT',
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({
+          noteid,
+          title,
+          body
+        })
+
+      }).then(async(res)=> {
+        console.log(res)
+        if (res.ok) {
+
+        }
+
+      })
+    }, [modalTitle, modalBody])
+  
+ 
+
+
 
   
 
@@ -129,8 +166,8 @@ function Mainpage({isOn}) {
   const note = { title:title.trim(), body: body.trim() };
   console.log(note)
   
-  // setTitle('')
-  // setBody('')
+  setTitle('')
+  setBody('')
   
   fetch('http://localhost:5000/add-note', {
     method: 'POST',
@@ -173,9 +210,10 @@ function Mainpage({isOn}) {
   // }) 
   
   useEffect(()=> {
-    console.log('modalData', modalData);
+    console.log('modalData', modalTitle);
+    console.log('modalData', modalBody);
     console.log('open', open)
-  }, [modalData, open])
+  }, [modalTitle, modalBody, open])
   
 
   return (
@@ -223,7 +261,9 @@ function Mainpage({isOn}) {
              
                 <div key={note.id} className={`flex flex-col hover-trigger flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pl-5 pt-5 pb-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`} 
                     onClick={()=> {
-                    setModalData(note);
+                    setModalData(note)
+                    setModalTitle(note);
+                    setModalBody(note)
                     setOpen(true);
                   }}>
                   <h2 className='font-bold'>{note.title}</h2>
@@ -251,12 +291,12 @@ function Mainpage({isOn}) {
         </div>
         
        { open === true && <Modal isOpen={open}>
-                    <input value={modalData.title}/>
-                    <TextareaAutosize className='w-full outline-none text-xs'>{modalData.body}</TextareaAutosize>
-                    {/* <textarea className='h-full'></textarea> */}
+                    <input value={modalTitle.title} onKeyUp={e => setModalTitle(e.target.value)}/>
+                    <TextareaAutosize className='w-full outline-none text-xs' value={modalBody.body} onKeyUp={e => setModalBody(e.target.value)}/>
+                
                    <div className='flex flex-row sticky w-full bg-red-500'>
                     <button onClick={()=>{setOpen(false)}}>Close</button>
-                    <button className='ml-[500px]'>Edit</button>
+                    <button onClick={editNote} className='ml-[500px]'>Edit</button>
                    </div>
         </Modal> }
        {/* <p className='text-xs font-bold pl-[20px]'>OTHERS</p> */}
