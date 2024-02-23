@@ -63,7 +63,7 @@ const deleteAll = () => {
         <p>Notes in Trash are deleted after 7 days.</p>
         <button onClick={deleteAll} className='pl-10 text-blue-400'>Empty Trash</button>
        </div>
-       <div className={`flex w-full items-stretch overflow-visible pb-[20px] pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'}  flex-1`}>
+       <div className={`flex w-full overflow-visible pb-[20px] pl-[15px] ${isOn? 'flex-row flex-nowrap items-center' : 'flex-row flex-wrap'} flex-1`}>
        <Masonry 
        breakpointCols={breakpointColumnsObj}
        className={`my-masonry-grid pl-10`}
