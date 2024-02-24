@@ -99,7 +99,7 @@ function Loginpage() {
    }
 
   return (
-    <div className='flex justify-center items-center bg-blue-500 h-[100vh]'>
+    <div className='flex justify-center items-center bg-gray-400 h-[100vh]'>
    
         <section>
           

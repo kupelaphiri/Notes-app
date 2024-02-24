@@ -33,6 +33,8 @@ function Navbar(props) {
     }
   }
 
+  
+
  
   return (
     <div className="">
@@ -68,7 +70,10 @@ function Navbar(props) {
           </form>
         </div>
         <div className=" flex flex-row pt-[5px] justify-between items-center bg-white w-[150px] h-[40px] lg:ml-[900px] ml-[780px] mt-[10px]">
+        <div className='flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
+         
           <svg
+          onClick={props.refresh}
             xmlns="http://www.w3.org/2000/svg"
             className="cursor-pointer h-[23px]"
             version="1.1"
@@ -76,7 +81,9 @@ function Navbar(props) {
           >
             <path d="m1e3 475v-250l-87.5 87.5c-77.5-85-190-137.5-312.5-137.5-235 0-425 190-425 425s190 425 425 425c120 0 227.5-50 305-130l-70-72.5c-57.5 62.5-142.5 102.5-235 102.5-180 0-325-145-325-325s145-325 325-325c95 0 182.5 42.5 242.5 107.5l-92.5 92.5z" />
           </svg>
-      
+         </div>
+
+         <div className='flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
         
           <svg
           onClick={props.portraitView}
@@ -93,7 +100,9 @@ function Navbar(props) {
               d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"
             />
           </svg>
-         
+         </div>
+
+         <div className='flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -114,12 +123,15 @@ function Navbar(props) {
               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
           </svg>
+          </div>
         </div>
-        <div onClick={logout} className='flex ml-[70px] cursor-pointer justify-center items-center'>
+        <div onClick={logout} className='flex ml-[60px] cursor-pointer justify-center items-center'>
+        <div className='flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200'>
+
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
         </svg>
-
+        </div>
         </div>
       </div>
     </div>

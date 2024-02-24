@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -16,9 +16,18 @@ function RootLayout() {
     setIsOn((current) => !current);
     console.log("functon call");
   };
+
+  const refresh = () => {
+    window.location.reload();
+  }
+
+  useEffect(()=> {
+    console.log('isOpen', isOpen)
+  }, [isOpen])
+
   return (
     <div className="h-full w-full text-black">
-      <Navbar HandleClick={HandleClick} portraitView={portraitView} />
+      <Navbar HandleClick={HandleClick} portraitView={portraitView} refresh={refresh}  />
       <div className="flex flex-row flex-1 w-full h-full">
         <div
           className={`flex flex-col shrink-0 pt-3 ${
@@ -28,7 +37,7 @@ function RootLayout() {
           <Sidebar isOpen={isOpen} />
         </div>
         <div className="h-full w-full overflow-y-auto flex-1 shrink-0">
-          <Outlet />
+          <Outlet context={[isOn, setIsOn, isOpen, setIsOpen ]} />
         </div>
       </div>
     </div>
