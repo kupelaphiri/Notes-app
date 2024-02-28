@@ -182,7 +182,8 @@ function Mainpage() {
   fetch('http://localhost:5000/add-note', {
     method: 'POST',
     headers: { "Content-type": "application/json" },
-    body: JSON.stringify(note)
+    body: JSON.stringify(note),
+    credentials: 'include'
   }).then(async(res) => {
     try {
       console.log(res);
@@ -206,7 +207,12 @@ function Mainpage() {
   useEffect(() => {
     
    
-      fetch('http://localhost:5000/all-notes').then(res => res.json())
+      fetch('http://localhost:5000/all-notes', {
+        method: 'GET',
+        headers: { "Content-type": "application/json" },
+        credentials: 'include'
+
+      }).then(res => res.json())
       
       .then(notes => setBackendPinnedData(notes))
     
@@ -250,7 +256,7 @@ function Mainpage() {
            
             className={`w-[400px] h-auto outline-none resize-none ${isActive? '': 'mt-1'} placeholder-black`}
             placeholder="Take a note..."
-           
+            
           >{body}</TextareaAutosize>
           
           <button onClick={handleSubmit} className={`${isActive? 'block' : 'hidden'} w-[80px] p-[10px] ml-[480px] hover:bg-gray-100`}>Ok</button>
@@ -259,14 +265,15 @@ function Mainpage() {
 
       {/* <div className="flex flex-col w-full h-full flex-1 bg-red-500">
         <p className='text-xs font-bold pl-[20px]'>PINNED</p> */}
-        <div className={`flex w-full items-stretch overflow-visible pb-[20px] pl-[15px] ${isOn ? 'flex flex-col flex-nowrap justify-center' : 'flex-row flex-wrap'} ${isOpen? '': 'justify-center'} ${isOn?(isOpen? '': 'justify-center'): ''}  flex-1`}>
+        <div className={`flex w-full items-stretch overflow-visible pb-[20px] pl-[15px] ${isOn ? 'flex-col flex-nowrap justify-center' : 'flex-row flex-wrap'} ${isOpen? '': 'justify-center'} ${isOn?(isOpen? '': 'justify-center'): ''}  flex-1`}>
         {isOn ? (
-          <div>
+          <div className={`flex w-full overflow-visible pb-[20px] pl-[15px] ${isOn? 'flex-col flex-nowrap items-center' : 'flex-row flex-wrap'} flex-1`}>
+
           {backendPinnedData.map((note) => {
             return (
               <>
              
-                <div key={note.id} className={`flex flex-col w-[240px] hover-trigger cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${isOn? 'w-[800px]' : ''}`} 
+                <div key={note.id} className={`flex flex-col w-[240px] hover-trigger cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${isOn? 'w-[597px]' : ''}`} 
                    >
                   <div className='w-full h-full pr-3 text-ellipsis pl-3 pb-8'
                    onClick={()=> {
@@ -354,7 +361,7 @@ function Mainpage() {
                     
                     <input value={modalTitle.title} className='outline-none' onKeyUp={e => setModalTitle(e.target.value)}/>
                     </div>
-                    <TextareaAutosize className='w-full outline-none text-xs'  onChange={e => setModalBody(e.target.value)}>{modalBody.body}</TextareaAutosize>
+                    <TextareaAutosize className='w-full outline-none text-xs resize-none'  onChange={e => setModalBody(e.target.value)}>{modalBody.body}</TextareaAutosize>
                 
                    <div className='flex flex-row sticky w-full'>
                    <svg onClick={()=>deleteNote(modalData._id)} className=" hidden-content w-[20px] ml-[2px] cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -364,7 +371,7 @@ function Mainpage() {
                    <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
                    <path fillRule="evenodd" d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                  </svg>
-                    <button onClick={editNote} className='ml-[500px]'>Edit</button>
+                    <button onClick={editNote} className='ml-[500px] p-1 hover:bg-gray-100'>Edit</button>
                    </div>
         </Modal> }
        {/* <p className='text-xs font-bold pl-[20px]'>OTHERS</p> */}
