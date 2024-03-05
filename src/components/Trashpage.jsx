@@ -30,6 +30,7 @@ function Trashpage() {
     fetch('http://localhost:5000/restore-note', {
       method: 'POST',
        headers: { "Content-type": "application/json" },
+       credentials: 'include',
       body: JSON.stringify({
         notesid: id
       }),
@@ -41,6 +42,7 @@ const permanentDelete = (id) => {
   fetch('http://localhost:5000/permanent-delete-notes', {
     method: 'POST',
     headers: {"Content-type": "application/json" },
+    credentials: 'include',
     body: JSON.stringify({
       deletednoteid: id
     })
@@ -61,6 +63,7 @@ const deleteAll = () => {
   fetch('http://localhost:5000/delete-all', {
     method: 'POST',
     headers: {"Content-type": "application/json" },
+    credentials: 'include',
     body: JSON.stringify()
   }).then(res => console.log(res));
 }

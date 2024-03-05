@@ -62,6 +62,7 @@ function Signup() {
     fetch('http://localhost:5000/add-user', {
       method: 'POST',
       headers: { "Content-type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify(userDetails)
     }).then(async(res) => {
         try {
