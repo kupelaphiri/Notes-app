@@ -1,147 +1,137 @@
-import React from 'react';
-import { useRef, useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import './Signup.css'
-import useAuth from '../hooks/useOutsideClickDetector/useAuth';
-import Cookies from 'js-cookie';
-
+import React from "react";
+import { useRef, useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./Signup.css";
+import useAuth from "../hooks/useAuth";
+import Cookies from "js-cookie";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-
 function Loginpage() {
-   const { setAuth } = useAuth();
-   const navigate = useNavigate()
-   const location = useLocation()
-   const from = location.state?.from?.pathname || '/'
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
+  const userRef = useRef();
+  const errRef = useRef();
 
-   const userRef = useRef()
-   const errRef = useRef()
+  const [user, setUser] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [validEmail, setValidEmail] = useState(false);
+  const [loginMsg, setLoginMsg] = useState("");
+  const [failedLogin, setFailedLogin] = useState("");
 
-   const [user, setUser] = useState('')
-   const [pwd, setPwd] = useState('')
-   const [errMsg, setErrMsg] = useState('')
-   const [validEmail, setValidEmail] = useState(false)
-   const [loginMsg, setLoginMsg] = useState('')
-   const [failedLogin, setFailedLogin] = useState('')
-
-   useEffect(()=>{
+  useEffect(() => {
     userRef.current.focus();
-   }, [])
+  }, []);
 
   //  useEffect(()=> {
   //   setUser(EMAIL_REGEX.test(user))
   //  }, [user])
 
-   useEffect(()=>{
-    setErrMsg('')
-   }, [user, pwd])
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, pwd]);
 
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-        const loginDetails = {email: user.trim(), password: pwd.trim() }
-        console.log('details', loginDetails);
-        setAuth(loginDetails);
-       
-        
-  
-        fetch('http://localhost:5000/auth', {
-          method: 'POST',
-          headers: { "Content-type": "application/json" },
-          withCredentials: true,
-          credentials: 'include',
-          body: JSON.stringify(loginDetails)
-        }).then(async(res) => {
-          try {
-            
-         const response =  await res.json()
-        
-         console.log('yoohoo', response);
-         if (res.ok) {
-          const cookie = Cookies.get('seddfcfcfcfcfcgygytrerrer')
-          console.log(cookie);
-           setUser('');
-           setPwd('');
-           setLoginMsg(response);
-           navigate(from, { replace: true });
-           setAuth(response)
-           
-          
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const loginDetails = { email: user.trim(), password: pwd.trim() };
+      console.log("details", loginDetails);
+      setAuth(loginDetails);
 
-         } else {
-          setFailedLogin(response)
-          
-         }
-      
-         
-        }catch (error) {
+      fetch("http://localhost:5000/auth", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        withCredentials: true,
+        credentials: "include",
+        body: JSON.stringify(loginDetails),
+      }).then(async (res) => {
+        try {
+          const response = await res.json();
+
+          console.log("yoohoo", response);
+          if (res.ok) {
+            const cookie = Cookies.get("seddfcfcfcfcfcgygytrerrer");
+            console.log(cookie);
+            setUser("");
+            setPwd("");
+            setLoginMsg(response);
+            navigate(from, { replace: true });
+            setAuth(response);
+          } else {
+            setFailedLogin(response);
+          }
+        } catch (error) {
           console.log(error);
-         
         }
-          
-        })
-        
-      } catch (error) {
-        if (!error?.response) {
-            setErrMsg('No server response')
-
-        } else if (error.response?.status === 500){
-            setErrMsg('Missing Email or Password')
-        } else if (error.response?.status === 401){
-            setErrMsg('Unauthorised')
-        } else {
-            setErrMsg('Login failed')
-        }
+      });
+    } catch (error) {
+      if (!error?.response) {
+        setErrMsg("No server response");
+      } else if (error.response?.status === 500) {
+        setErrMsg("Missing Email or Password");
+      } else if (error.response?.status === 401) {
+        setErrMsg("Unauthorised");
+      } else {
+        setErrMsg("Login failed");
       }
-     
-   }
+    }
+  };
 
   return (
-    <div className='flex justify-center items-center bg-gray-400 h-[100vh]'>
-   
-        <section>
-          
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Sign In</h1>
-            <div className='w-full bg-red-600 text-xs'>
-            <h1>{failedLogin}</h1>
-            </div>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="text"
-                    id="username"
-                    className='text-black'
-                    ref={userRef}
-                    autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
-                    value={user}
-                    required
-                />
+    <div className="flex justify-center items-center bg-gray-400 h-[100vh]">
+      <section>
+        <p
+          ref={errRef}
+          className={errMsg ? "errmsg" : "offscreen"}
+          aria-live="assertive"
+        >
+          {errMsg}
+        </p>
+        <h1>Sign In</h1>
+        <div className="w-full bg-red-600 text-xs">
+          <h1>{failedLogin}</h1>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="text"
+            id="username"
+            className="text-black"
+            ref={userRef}
+            autoComplete="off"
+            onChange={(e) => setUser(e.target.value)}
+            value={user}
+            required
+          />
 
-                <label htmlFor="password">Password:</label>
-                <input
-                    type="password"
-                    id="password"
-                    className='text-black'
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={pwd}
-                    required
-                />
-                <button className='bg-white text-black mt-7 h-8'>Sign In</button>
-            </form>
-            <p>
-                Need an Account?<br />
-                <span className="line">
-                    {/*put router link here*/}
-                    <a href="#" className='underline'>Sign Up</a>
-                </span>
-            </p>
-        </section>
-</div>
-  )
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            className="text-black"
+            onChange={(e) => setPwd(e.target.value)}
+            value={pwd}
+            required
+          />
+          <button className="bg-white text-black mt-7 h-8">Sign In</button>
+        </form>
+        <p>
+          Need an Account?
+          <br />
+          <span className="line">
+            {/*put router link here*/}
+            <a href="#" className="underline">
+              Sign Up
+            </a>
+          </span>
+        </p>
+      </section>
+    </div>
+  );
 }
 
-export default Loginpage
+export default Loginpage;

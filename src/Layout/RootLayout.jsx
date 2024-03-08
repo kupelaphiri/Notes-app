@@ -3,10 +3,12 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useState } from "react";
+import useGlobal from "../hooks/useGlobal";
 
 function RootLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [isOn, setIsOn] = useState(false);
+  const {searchResults, setSearchResults} = useGlobal()
 
   const HandleClick = () => {
     setIsOpen((current) => !current);

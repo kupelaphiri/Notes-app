@@ -1,82 +1,73 @@
 import { useLocation, Navigate } from "react-router-dom";
-import useAuth from "./hooks/useOutsideClickDetector/useAuth";
+import useAuth from "./hooks/useAuth";
 import RootLayout from "./Layout/RootLayout";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "./context/AuthProvide";
 
-const RequireAuth = ({children}) => {
+const RequireAuth = ({ children }) => {
   const { auth, setAuth } = useAuth();
   // const [auth, setAuth] = useState(null);
-  
+
   console.log(auth);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   // setAuth('lol')
   const getCookie = async () => {
-  try {
-    setLoading(true)
-    const res = await fetch("http://localhost:5000/get-cookies", {
-      method: "GET",
-      headers: { "Content-type": "application/json" },
-      withCredentials: true,
-      credentials: "include"
-    });
-    
-    
-    
-    const response = await res.json()
-
-    
-    
-              
-    if (res.ok) {
-      const accessToken = response.accessToken
-      console.log('accessToken', accessToken);
-       setAuth(response)
-       
-
-       console.log('auth', auth)
-       
-    } else {
-        setAuth(null)
-    }
-    setLoading(false)
-
-  } catch (error) {
-    setLoading(false)
-    
-  }
-  };
-
- const refreshToken = async () => {
-  try {
-    const refresh = await fetch("http://localhost:5000/refresh-token", {
-        method: 'POST',
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/get-cookies", {
+        method: "GET",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
-        credentials: "include"
-      })
-    
-    const res = refresh.json()
+        credentials: "include",
+      });
 
-    if (res.ok) {
-      setAuth(res)
-    } else {
-      setAuth(null)
+      const response = await res.json();
+
+      if (res.ok) {
+        const accessToken = response.accessToken;
+        console.log("accessToken", accessToken);
+        setAuth(response);
+
+        console.log("auth", auth);
+      } else {
+        setAuth(null);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
-  } catch (error) {
-    console.log(error)
-  }
- }
+  };
+
+  const refreshToken = async () => {
+    try {
+      const refresh = await fetch("http://localhost:5000/refresh-token", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        withCredentials: true,
+        credentials: "include",
+      });
+
+      const res = refresh.json();
+
+      if (res.ok) {
+        setAuth(res);
+      } else {
+        setAuth(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    getCookie()
+    getCookie();
   }, []);
 
   // useEffect(()=> {
   //  refreshToken()
-  
+
   //  console.log('checking if this effect is running')
   // }, [auth])
 
@@ -90,8 +81,8 @@ const RequireAuth = ({children}) => {
       </div>
     );
   }
-  return auth? (
-      children
+  return auth ? (
+    children
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );

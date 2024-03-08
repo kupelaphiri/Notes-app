@@ -11,6 +11,7 @@ import RootLayout from "./Layout/RootLayout";
 import { useState } from "react";
 import Loginpage from "./components/Loginpage";
 import RequireAuth from "./RequireAuth";
+import Searchpage from "./components/Searchpage";
 
 
 function AppRoutes() {
@@ -40,6 +41,7 @@ function AppRoutes() {
         <Route index element={<Mainpage isOn={isOn} isOpen={isOpen} />} />
         <Route path="/archivepage" element={<Archivepage isOn={isOn} />} />
         <Route path="/trashpage" element={<Trashpage isOn={isOn} />} />
+        <Route path="/searchpage" element={<Searchpage />} />
     
       </Route>
     </Routes>
