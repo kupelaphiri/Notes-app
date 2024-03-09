@@ -24,6 +24,13 @@ const breakpointColumnsObj = {
 
   return (
     <div className="flex flex-col h-screen w-full overflow-y-auto pb-[100px]">
+    {searchResults.length === 0 && 
+      <div>There is no search</div>
+      }
+
+      {searchResults === null && 
+      <div>No search matches</div>
+      }
          <div className={`flex w-full items-stretch overflow-visible pb-[20px] justify-center pl-[15px]   flex-1`}>
         <Masonry
            breakpointCols={breakpointColumnsObj}

@@ -18,11 +18,16 @@ function Navbar(props) {
   const {searchResults, setSearchResults} = useGlobal()
 
   const navigate = useNavigate();
+  const home = '/'
 
   const HandleNavigate = (path) => {
     navigate(path);
-    setSearch(true);
+    if (path === home) {
+
+      setSearch(false);
+    } 
   };
+
 
   const logout = async () => {
     try {
@@ -48,8 +53,8 @@ function Navbar(props) {
   useEffect(() => {
     const query = async () => {
       try {
-       const res = await fetch("http://localhost:5000/search-notes", {
-          method: "POST",
+       const res = await fetch(`http://localhost:5000/search-notes/?q=${searchQuery}`, {
+          method: "GET",
           headers: { "Content-type": "application/json" },
           credentials: "include",
         });
@@ -57,6 +62,10 @@ function Navbar(props) {
         const results = await res.json();
         if (res.ok) {
           setSearchResults(results);
+        } else if (!res.ok) {
+          setSearchResults([])
+        } else if (res.status == 406) {
+          setSearchResults(null)
         }
       } catch (error) {
         console.log(error);
@@ -65,9 +74,9 @@ function Navbar(props) {
     query();
   }, [searchQuery]);
 
-  useEffect(() => {
-    console.log("searchQuery", searchQuery);
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   console.log("searchQuery", searchQuery);
+  // }, [searchQuery]);
 
   return (
     <div className="">
@@ -98,6 +107,7 @@ function Navbar(props) {
             <input
               onFocus={() => {
                 HandleNavigate("/searchpage");
+                setSearch(true)
               }}
               onChange={(e) => setSearchQuery(e.target.value)}
               className=" pl-[60px] mt-[15px] w-[650px] h-[47px] outline-none bg-gray-100"
@@ -109,6 +119,7 @@ function Navbar(props) {
             <svg
               onClick={() => {
                 HandleNavigate("/");
+                setSearch(false)
               }}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

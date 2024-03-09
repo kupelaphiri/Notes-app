@@ -209,11 +209,7 @@ function Mainpage() {
   //   .then(data => setBackendOtherData(data))
   // })
 
-  useEffect(() => {
-    console.log("modalData", modalTitle);
-    console.log("modalData", modalBody);
-    console.log("open", open);
-  }, [modalTitle, modalBody, open]);
+ 
 
   return (
     <>
