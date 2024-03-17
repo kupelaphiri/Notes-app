@@ -128,6 +128,7 @@ function Mainpage() {
         console.log(res);
         if (res.ok) {
           setOpen(false);
+          getNotes()
         }
       });
     },

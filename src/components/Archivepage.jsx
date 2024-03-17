@@ -52,6 +52,35 @@ function Archivepage() {
     }
   };
 
+  const refreshNotes = async () => {
+   
+    try {
+      const res = await fetch("http://localhost:5000/archived-notes", {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      });
+      const notes = await res.json();
+      // setLoading(false)
+      if (notes.length == 0) {
+        setArchivedNotes(null);
+      } else if (notes.length != 0) {
+        setArchivedNotes(notes);
+        // setArchivedNotes((prev)=> {
+        //   const newArr = [...prev]
+        //   newArr.
+        // })
+        // setIsLoading(false);
+      } else {
+        // setIsLoading(false);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
  
 
   //displays all archived notes
@@ -80,6 +109,7 @@ function Archivepage() {
     const result = removeObjectWithId(currentNotes, id)
     console.log('results', result, currentNotes)
     setArchivedNotes(result)
+    refreshNotes()
 
     } catch (error) {
       console.log('error', error)
