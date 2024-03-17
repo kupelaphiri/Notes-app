@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Signup.css";
@@ -11,6 +11,7 @@ function Loginpage() {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const locate = useNavigate();
   const from = location.state?.from?.pathname || "/";
 
   const userRef = useRef();
@@ -34,6 +35,17 @@ function Loginpage() {
   useEffect(() => {
     setErrMsg("");
   }, [user, pwd]);
+
+  
+  
+ const click = useCallback((e)=> {
+  e.preventDefault()
+   const HandleNavigate = (path) => {
+     locate(path);
+     
+   };
+HandleNavigate('/signup')
+ }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +94,7 @@ function Loginpage() {
   };
 
   return (
-    <div className="flex justify-center items-center bg-gray-400 h-[100vh]">
+    <div className="flex justify-center items-center bg-white h-[100vh]">
       <section>
         <p
           ref={errRef}
@@ -124,9 +136,9 @@ function Loginpage() {
           <br />
           <span className="line">
             {/*put router link here*/}
-            <a href="#" className="underline">
+            <div className="underline cursor-pointer" onClick={click}>
               Sign Up
-            </a>
+            </div>
           </span>
         </p>
       </section>

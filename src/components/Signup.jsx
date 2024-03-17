@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './Signup.css'
@@ -31,6 +32,7 @@ function Signup() {
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+    const navigate = useNavigate()
 
     useEffect(() => {
         userRef.current.focus();
@@ -52,6 +54,16 @@ function Signup() {
     useEffect(() => {
         setErrMsg('');
     }, [user, pwd, matchPwd])
+
+
+  const click = useCallback((e)=> {
+    e.preventDefault()
+    const HandleNavigate = (path) => {
+        navigate(path);
+        
+      };
+      HandleNavigate('/login')
+  })
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -200,7 +212,7 @@ function Signup() {
                         Already signed up?<br />
                         <span className="line">
                             {/*put router link here*/}
-                            <a href="#" className='underline'>Sign In</a>
+                            <a  onClick={click} className='underline cursor-pointer'>Sign In</a>
                         </span>
                     </p>
                         </section>

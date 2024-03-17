@@ -5,8 +5,9 @@ import { useOutletContext } from "react-router-dom";
 import Modal from "./Modal";
 import Masonry from "react-masonry-css";
 import "./Mainpage.css";
-import autosize from "autosize";
 import { TextareaAutosize } from "@mui/base/TextareaAutosize";
+import { removeObjectWithId } from "../utilities/Reusables"; 
+
 
 function Mainpage() {
   const [isActive, setIsActive] = useState(false);
@@ -38,29 +39,8 @@ function Mainpage() {
     setOpen(false);
   };
 
-  const changeTitle = (event) => {
-    setTitle(event.target.value);
-  };
+  const ENDPOINT = 'http://localhost:5000'
 
-  const changeBody = (event) => {
-    setBody(event.target.value);
-  };
-
-  const changeField = (title, value) => {
-    let newTitle = modalData.title + title;
-    console.log("newTitle", newTitle);
-    newTitle = value;
-    // setTitle(newTitle);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // const handleOpen = (data) => {
-  //   setModalData(data)
-  //   setOpen(true);
-  // };
 
   const breakpointColumnsObj = {
     default: 7,
@@ -91,6 +71,9 @@ function Mainpage() {
         return newArr;
       });
     });
+    const currentNotes = [...backendPinnedData]
+    const result = removeObjectWithId(currentNotes, id)
+    setBackendPinnedData(result)
     setOpen(false);
   };
 
@@ -104,6 +87,9 @@ function Mainpage() {
         archivedNoteId: id,
       }),
     });
+    const currentNotes = [...backendPinnedData]
+    const result = removeObjectWithId(currentNotes, id)
+    setBackendPinnedData(result)
     setOpen(false);
   };
 
@@ -202,7 +188,7 @@ function Mainpage() {
       .then((res) => res.json())
 
       .then((notes) => setBackendPinnedData(notes));
-  }, [backendPinnedData]);
+  }, []);
 
   // useEffect(() => {
   //   fetch('http://localhost:5000/api/other').then(res => res.json())
@@ -224,7 +210,7 @@ function Mainpage() {
             } bg-white w-[598px] border rounded-lg pl-5 shadow-lg`}
           >
             <input
-              onChange={changeTitle}
+              onChange={(e) => setTitle(e.target.value) }
               className={`w-[400px] h-[42px] mb-2 mt-2 ${
                 isActive ? "block" : "hidden"
               } outline-none`}
@@ -232,7 +218,7 @@ function Mainpage() {
               value={title}
             />
             <TextareaAutosize
-              onChange={changeBody}
+              onChange={(e)=> setBody(e.target.value)}
               onFocus={focus}
               className={`w-[400px] h-auto outline-none resize-none ${
                 isActive ? "" : "mt-1"

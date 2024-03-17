@@ -19,7 +19,7 @@ function Modal({ isOpen, onClose, children }) {
             }}
         >
             <div
-            className=' bg-white w-[640px] m-auto p-[2%] overflow-y-auto max-h-[425px]'
+            className=' bg-white w-[640px] m-auto p-[2%] rounded-lg overflow-y-auto max-h-[425px]'
                 // style={{
                 //     background: "white",
                 //     height: 150,
