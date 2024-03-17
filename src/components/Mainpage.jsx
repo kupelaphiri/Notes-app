@@ -39,6 +39,20 @@ function Mainpage() {
     setOpen(false);
   };
 
+  const getNotes = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/all-notes", {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      })
+      const notes = await res.json();
+      setBackendPinnedData(notes)
+    } catch (error) {
+      console.log(error)
+    }    
+  } 
+
   const ENDPOINT = 'http://localhost:5000'
 
 
@@ -92,29 +106,6 @@ function Mainpage() {
     setBackendPinnedData(result)
     setOpen(false);
   };
-
-  // const deleteNote = (id) => {
-  //   console.log('id',id);
-  //   fetch(`http://localhost:5000/delete-note`, {
-  //     method: 'POST',
-  //     headers: { "Content-type": "application/json" },
-  //     body: JSON.stringify({
-  //       noteid: id
-  //     }),
-  //    }).then((res)=> res.json())
-
-  //   // .then((result)=>{
-  //   //   result.json().then((res)=>{
-  //   //     console.warn(res)
-
-  //     // const response = await res.json()
-  //     // console.log('loser', response);
-  //     // setBackendPinnedData((prev) => {
-  //     //   const newArr = [...prev]
-  //     //     newArr.push(response)
-  //     //     return newArr
-  //     //   })
-  //       };
 
   const editNote = useCallback(
     (e) => {
@@ -180,14 +171,7 @@ function Mainpage() {
   );
 
   useEffect(() => {
-    fetch("http://localhost:5000/all-notes", {
-      method: "GET",
-      headers: { "Content-type": "application/json" },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-
-      .then((notes) => setBackendPinnedData(notes));
+   getNotes()
   }, []);
 
   // useEffect(() => {
