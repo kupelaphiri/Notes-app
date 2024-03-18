@@ -4,11 +4,7 @@ import Masonry from "react-masonry-css";
 import "./Mainpage.css";
 import { usePageVisibility } from "../hooks/usePageVisibility";
 import useGlobal from "../hooks/useGlobal";
-import { removeObjectWithId } from "../utilities/Reusables"; 
-
-
-
-
+import { removeObjectWithId } from "../utilities/Reusables";
 
 function Archivepage() {
   const [archivedNotes, setArchivedNotes] = useState([{}]);
@@ -21,7 +17,6 @@ function Archivepage() {
   const [isLoading, setIsLoading] = useState(false);
   const isPageVisible = usePageVisibility();
   const timerIdRef = useRef(null);
- 
 
   const getNotes = async () => {
     setIsLoading(true);
@@ -53,7 +48,6 @@ function Archivepage() {
   };
 
   const refreshNotes = async () => {
-   
     try {
       const res = await fetch("http://localhost:5000/archived-notes", {
         method: "GET",
@@ -81,23 +75,16 @@ function Archivepage() {
     }
   };
 
- 
-
   //displays all archived notes
-  useEffect(() => { 
+  useEffect(() => {
     getNotes();
-    
   }, []);
-
-
-
- 
 
   //unarchives all archived notes
   const unarchive = async (id) => {
     console.log(id);
     try {
-     await fetch("http://localhost:5000/unarchive", {
+      await fetch("http://localhost:5000/unarchive", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -105,19 +92,15 @@ function Archivepage() {
           archivedNoteId: id,
         }),
       });
-    const currentNotes = [...archivedNotes]
-    const result = removeObjectWithId(currentNotes, id)
-    console.log('results', result, currentNotes)
-    setArchivedNotes(result)
-    refreshNotes()
-
+      const currentNotes = [...archivedNotes];
+      const result = removeObjectWithId(currentNotes, id);
+      console.log("results", result, currentNotes);
+      setArchivedNotes(result);
+      refreshNotes();
     } catch (error) {
-      console.log('error', error)
+      console.log("error", error);
     }
-   
   };
-
-  
 
   const permanentDelete = (id) => {
     console.log("id", id);
@@ -130,10 +113,9 @@ function Archivepage() {
       }),
     });
 
-    const currentNotes = [...archivedNotes]
-    const result = removeObjectWithId(currentNotes, id)
-    setArchivedNotes(result)
-
+    const currentNotes = [...archivedNotes];
+    const result = removeObjectWithId(currentNotes, id);
+    setArchivedNotes(result);
   };
 
   const breakpointColumnsObj = {

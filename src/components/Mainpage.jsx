@@ -19,6 +19,7 @@ function Mainpage() {
   const [modalData, setModalData] = useState(null);
   const [modalTitle, setModalTitle] = useState(null);
   const [modalBody, setModalBody] = useState(null);
+  const [isLoading, setIsLoading] = useState(false)
   const [isOn, setIsOn] = useOutletContext();
   const [isOpen, setIsOpen] = useOutletContext();
 
@@ -40,6 +41,7 @@ function Mainpage() {
   };
 
   const getNotes = async () => {
+    setIsLoading(true)
     try {
       const res = await fetch("http://localhost:5000/all-notes", {
         method: "GET",
@@ -47,13 +49,42 @@ function Mainpage() {
         credentials: "include",
       })
       const notes = await res.json();
-      setBackendPinnedData(notes)
+      if (notes.length == 0) {
+        setBackendPinnedData(null)
+        setIsLoading(false)
+      } else {
+        setBackendPinnedData(notes)
+        setIsLoading(false)
+      }
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }    
   } 
 
-  const ENDPOINT = 'http://localhost:5000'
+  const refreshNotes = async () => {
+  
+    try {
+      const res = await fetch("http://localhost:5000/all-notes", {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      })
+      const notes = await res.json();
+      if (notes.length == 0) {
+        setBackendPinnedData(null)
+        setIsLoading(false)
+      } else {
+        setBackendPinnedData(notes)
+        setIsLoading(false)
+      }
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    }    
+  } 
+
+  
 
 
   const breakpointColumnsObj = {
@@ -88,6 +119,7 @@ function Mainpage() {
     const currentNotes = [...backendPinnedData]
     const result = removeObjectWithId(currentNotes, id)
     setBackendPinnedData(result)
+    refreshNotes()
     setOpen(false);
   };
 
@@ -104,6 +136,7 @@ function Mainpage() {
     const currentNotes = [...backendPinnedData]
     const result = removeObjectWithId(currentNotes, id)
     setBackendPinnedData(result)
+    refreshNotes()
     setOpen(false);
   };
 
@@ -184,10 +217,10 @@ function Mainpage() {
 
   return (
     <>
-      <div
+    <div
         className={`h-screen flex flex-col w-full min-h-full  overflow-y-auto pb-[100px] flex-1 shrink-0`}
       >
-        <div className="flex justify-center w-full">
+     <div className="flex justify-center w-full">
           <div
             ref={InputRef}
             className={`flex flex-col m-8  ${
@@ -223,6 +256,18 @@ function Mainpage() {
             </button>
           </div>
         </div>
+      {isLoading?(
+       <div>Loading</div>
+      ): (
+        
+      <div>
+    {backendPinnedData == null ? (
+      <div>Empty</div>
+    ) : (
+      <div
+        className={`h-screen flex flex-col w-full min-h-full  overflow-y-auto pb-[100px] flex-1 shrink-0`}
+      >
+        
 
         {/* <div className="flex flex-col w-full h-full flex-1 bg-red-500">
         <p className='text-xs font-bold pl-[20px]'>PINNED</p> */}
@@ -431,21 +476,13 @@ function Mainpage() {
             </div>
           </Modal>
         )}
-        {/* <p className='text-xs font-bold pl-[20px]'>OTHERS</p> */}
-
-        {/* <div className='flex flex-row h-[500px] flex-wrap pl-[15px] mb-10 overflow-hidden items-baseline pr-[5px]'>
-       {backendOtherData.map((note) => {
-        return (
-           <div key={note.title} className="w-[280px] min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] p-5 rounded-lg mr-4">
-            <h2>{note.title}</h2>
-            <p>{note.content}</p>
-         </div>
-        );
-       })}
-       </div> */}
-
-        {/* </div> */}
+        
       </div>
+    )}
+     </div>
+      )}
+
+    </div>
     </>
   );
 }
