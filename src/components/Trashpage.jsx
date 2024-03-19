@@ -112,6 +112,7 @@ const deleteAll = () => {
     credentials: 'include',
     body: JSON.stringify()
   }).then(res => console.log(res));
+  refreshNotes()
 }
 
   return (
