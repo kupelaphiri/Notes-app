@@ -9,7 +9,7 @@ import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import { removeObjectWithId } from "../utilities/Reusables"; 
 import 'ldrs/ring'
 import { ring } from 'ldrs'
-// import { ReactComponent as empty } from "./assets/empty-21.svg";
+
 
 ring.register();
 
@@ -277,24 +277,26 @@ function Mainpage() {
         </div>
      
         
-    <div className={`h-screen flex flex-col w-full min-h-full ${backendPinnedData == null ? 'pt-[70px] items-center' : ''} overflow-y-auto pb-[100px] flex-1 shrink-0`}>
 
+        
     {backendPinnedData == null ? (
-      
-       <svg xmlns="http://www.w3.org/2000/svg" className='left-[25px] w-[200px] text-gray-300' fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+      <>
+      <div className={`h-screen flex flex-col w-full min-h-full ${backendPinnedData == null ? 'pt-[90px] pl-[100px] items-center' : ''} overflow-y-auto pb-[100px] flex-1 shrink-0`}>
+       <svg xmlns="http://www.w3.org/2000/svg" className=' w-[100px] text-gray-300' fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
        </svg>
-     
+       <p className="text-gray-600 mt-[20px]">Notes you add appear here</p>
+      </div>
+     </>
     ) : (
       <div
-        className={`h-screen flex flex-col w-full min-h-full  overflow-y-auto pb-[100px] flex-1 shrink-0`}
+        className={`flex flex-col w-full min-h-full overflow-y-hidden pb-[100px] flex-1 shrink-0`}
       >
         
 
-        {/* <div className="flex flex-col w-full h-full flex-1 bg-red-500">
-        <p className='text-xs font-bold pl-[20px]'>PINNED</p> */}
+       
         <div
-          className={`flex w-full items-stretch overflow-visible pb-[20px] pl-[15px] ${
+          className={`flex w-full items-stretch pb-[20px] pl-[15px] ${
             isOn ? "flex-col flex-nowrap justify-center" : "flex-row flex-wrap"
           } ${isOpen ? "" : "justify-center"} ${
             isOn ? (isOpen ? "" : "justify-center") : ""
@@ -302,9 +304,9 @@ function Mainpage() {
         >
           {isOn ? (
             <div
-              className={`flex w-full overflow-visible pb-[20px] pl-[15px] ${
+              className={`flex w-full h-full pb-[20px] pl-[15px] ${
                 isOn
-                  ? "flex-col flex-nowrap items-center"
+                  ? "flex-col flex-nowrap items-center h-full"
                   : "flex-row flex-wrap"
               } flex-1`}
             >
@@ -498,13 +500,13 @@ function Mainpage() {
             </div>
           </Modal>
         )}
+        </div>
         
-      </div>
-    )}
-    </div>
+        )}
+        
     
-      </div>
-      )}
+    </div>
+    )}
 
     </div>
     </>
