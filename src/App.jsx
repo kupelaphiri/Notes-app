@@ -11,7 +11,7 @@ const ENDPOINT = "http://localhost:5000";
 
 
 function App() {
-  
+  const {isDark} = useGlobal()
 
 
   
@@ -21,7 +21,7 @@ function App() {
  
   return (
     
- <div className='flex flex-col h-screen w-screen overflow-hidden'>
+ <div className={`flex flex-col h-screen ${isDark? 'bg-dim': 'bg-white'} w-screen overflow-hidden`}>
    
    <AppRoutes />
    

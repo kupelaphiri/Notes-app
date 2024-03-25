@@ -4,8 +4,8 @@ import SearchContext from "../context/GlobalProvide";
 
 const useGlobal = () => {
     const { searchResults, setSearchResults } = useContext(SearchContext);
-    const { socket, setSocket} = useContext(SearchContext)
-    return { searchResults, setSearchResults, socket, setSocket };
+    const {isDark, setIsDark} = useContext(SearchContext)
+    return { searchResults, setSearchResults, isDark, setIsDark };
   };
 
 

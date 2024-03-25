@@ -23,6 +23,7 @@ function Archivepage() {
   const [isLoading, setIsLoading] = useState(false);
   const isPageVisible = usePageVisibility();
   const timerIdRef = useRef(null);
+  const {isDark} = useGlobal()
 
   const getNotes = async () => {
     setIsLoading(true);
@@ -135,7 +136,7 @@ function Archivepage() {
   };
 
   return (
-    <div className={`flex ${isLoading? 'justify-center pt-[200px] items-center': ''}`}>
+    <div className={`flex ${isLoading? 'justify-center pt-[200px] items-center': ''} ${isDark? 'bg-dim': ''}`}>
       {isLoading === true ? (
        <l-ring
        size="40"
@@ -169,7 +170,7 @@ function Archivepage() {
                     return (
                       <div
                         key={note.id}
-                        className={`flex flex-col w-[240px] hover-trigger cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                        className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                           isOn ? "w-[597px]" : ""
                         }`}
                       >
@@ -182,7 +183,7 @@ function Archivepage() {
                             setOpen(true);
                           }}
                         >
-                          <h2 className="font-bold text-xs">{note.title}</h2>
+                          <h2 className="text-xs">{note.title}</h2>
                           <p className="text-xs">{note.body}</p>
                         </div>
                         <div className="flex flex-row justify-end pr-1 h-full w-full">
@@ -191,7 +192,7 @@ function Archivepage() {
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 20 20"
                             fill="currentColor"
-                            className=" w-[20px] cursor-pointer"
+                            className="invisible group-hover:visible w-[20px] cursor-pointer"
                           >
                             <path
                               fillRule="evenodd"
@@ -201,7 +202,7 @@ function Archivepage() {
                           </svg>
                           <svg
                             onClick={() => permanentDelete(note._id)}
-                            className=" w-[20px] cursor-pointer"
+                            className="invisible group-hover:visible w-[20px] cursor-pointer"
                             viewBox="0 0 48 48"
                             xmlns="http://www.w3.org/2000/svg"
                           >
@@ -231,7 +232,7 @@ function Archivepage() {
                       return (
                         <div
                           key={note.id}
-                          className={`flex flex-col w-[240px] hover-trigger cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                          className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
                             isOn ? "w-[597px]" : ""
                           }`}
                         >
@@ -244,7 +245,7 @@ function Archivepage() {
                               setOpen(true);
                             }}
                           >
-                            <h2 className="font-bold text-xs">{note.title}</h2>
+                            <h2 className="text-xs">{note.title}</h2>
                             <p className="text-xs">{note.body}</p>
                           </div>
                           <div className="flex flex-row justify-end pr-1 h-full w-full">
@@ -253,7 +254,7 @@ function Archivepage() {
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 20 20"
                               fill="currentColor"
-                              className=" w-[20px] cursor-pointer"
+                              className="invisible group-hover:visible w-[20px] cursor-pointer"
                             >
                               <path
                                 fillRule="evenodd"
@@ -263,7 +264,7 @@ function Archivepage() {
                             </svg>
                             <svg
                               onClick={() => permanentDelete(note._id)}
-                              className=" w-[20px] cursor-pointer"
+                              className="invisible group-hover:visible w-[20px] cursor-pointer"
                               viewBox="0 0 48 48"
                               xmlns="http://www.w3.org/2000/svg"
                             >

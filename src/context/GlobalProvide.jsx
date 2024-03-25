@@ -4,10 +4,10 @@ const SearchContext = createContext({})
 
 export const GlobalProvider = ({ children }) => {
     const [searchResults, setSearchResults] = useState([]);
-    const [socket, setSocket] = useState(null)
+    const [isDark, setIsDark] = useState(false)
 
     return(
-        <SearchContext.Provider value={{ searchResults, setSearchResults, socket, setSocket }}>
+        <SearchContext.Provider value={{ searchResults, setSearchResults, isDark, setIsDark }}>
             {children}
         </SearchContext.Provider>
     )

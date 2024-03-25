@@ -6,6 +6,7 @@ import useGlobal from '../hooks/useGlobal';
 
 function Searchpage() {
 const {searchResults} = useGlobal()
+const {isDark} = useGlobal()
 
 
 
@@ -23,7 +24,7 @@ const breakpointColumnsObj = {
 
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-y-auto pb-[100px]">
+    <div className={`flex flex-col h-screen ${isDark? 'bg-dim' : 'bg-white'} w-full overflow-y-auto pb-[100px]`}>
     {searchResults.length === 0 && 
       <div>There is no search</div>
       }

@@ -1,21 +1,30 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import useGlobal from "../hooks/useGlobal";
 import {
   useLocation,
   Navigate,
   useNavigate,
   useOutletContext,
 } from "react-router-dom";
-import RootLayout from "../Layout/RootLayout";
-import useGlobal from "../hooks/useGlobal";
+import RootLayout from "../Layout/RootLayout"
+import { useUtilities } from "../hooks/useOutsideClickDetector";
+
 
 function Navbar(props) {
   const { auth, setAuth } = useAuth();
   const [search, setSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
-  const {searchResults, setSearchResults} = useGlobal()
+  const {setSearchResults} = useGlobal()
+  const [isVisible, setIsVisible] = useState(false)
+  const {isDark, setIsDark} = useGlobal()
+  const { useOutsideClickDetector } = useUtilities();
+  
+
+  const setRef = useRef(null)
+
 
   const navigate = useNavigate();
   const home = '/'
@@ -27,6 +36,21 @@ function Navbar(props) {
       setSearch(false);
     } 
   };
+
+  const settings = () => {
+    setIsVisible(true)
+  }
+
+  const unfocus = () => {
+    setIsVisible(false);
+    // handleSubmit()
+  };
+
+  useOutsideClickDetector(setRef, unfocus)
+
+  const darkMode = () => {
+    setIsDark((current) => !current);
+  }
 
 
   const logout = async () => {
@@ -50,27 +74,28 @@ function Navbar(props) {
     }
   };
 
-  useEffect(() => {
-    const query = async () => {
-      try {
-       const res = await fetch(`http://localhost:5000/search-notes/?q=${searchQuery}`, {
-          method: "GET",
-          headers: { "Content-type": "application/json" },
-          credentials: "include",
-        });
+  const query = async () => {
+    try {
+     const res = await fetch(`http://localhost:5000/search-notes/?q=${searchQuery}`, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      });
 
-        const results = await res.json();
-        if (res.ok) {
-          setSearchResults(results);
-        } else if (!res.ok) {
-          setSearchResults([])
-        } else if (res.status == 406) {
-          setSearchResults(null)
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      const results = await res.json();
+      if (res.ok) {
+        setSearchResults(results);
+      } else if (!res.ok) {
+        setSearchResults(results)
+      } else if (!res.ok && results == 'Internal server error') {
+        setSearchResults(null)
+      } 
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     query();
   }, [searchQuery]);
 
@@ -79,42 +104,41 @@ function Navbar(props) {
   // }, [searchQuery]);
 
   return (
-    <div className="">
-      <div className="flex flex-row  h-[64px] w-full border-b-[1px]">
-        <div className="flex mt-[5px] ml-[10px] h-[48px] w-[232px]">
+    
+      <div className={`flex flex-row ${isDark? 'bg-dim' : ''} h-[64px] w-full mb-0 border-b-[1px]`}>
+        <div className="flex mt-[5px] items-center ml-[10px] mr-[20px] h-[48px]">
           <div
             onClick={props.HandleClick}
-            className="flex flex-row items-center h-[48px] w-[48px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200"
+            className="flex items-center justify-center h-[40px] w-[40px] ml-[8px] cursor-pointer rounded-full hover:bg-gray-200"
           >
-            <svg className="mt-[5px] pl-[5px] mb-[5px] ml-[8px] text-white text-xl h-[24px] w-[24px] cursor-pointer">
+            <svg className={`${isDark? 'text-white': ''} ml-[7px] text-xl h-[23px] cursor-pointer`}>
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
             </svg>
           </div>
 
-          <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />
-          <div className="pl-[20px] pt-[12px]">
-            <span>Notify</span>
-          </div>
+          <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />     
+           <span className={`ml-[20px] ${isDark? 'text-white': ''}`}>Notify</span>
+        
         </div>
-        <div className="absolute flex flex-row left-[250px] top-[6px] rounded-lg bg-gray-100 h-[47px] w-[722px]">
-          <svg className="absolute top-[12px] left-[15px] h-[40px] w-[40px] cursor-pointer">
+        <div className={`flex flex-row ml-[50px] mt-[6px] rounded-lg ${isDark? 'bg-light-dim': 'bg-gray-100'} h-[47px] shrink w-full max-w-[800px]`}>
+          <svg className="mt-[12px] ml-[15px] h-[40px] w-[40px] cursor-pointer">
             <path
-              className=""
+             
               d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"
             ></path>
           </svg>
-          <form className="">
+          
             <input
               onFocus={() => {
                 HandleNavigate("/searchpage");
                 setSearch(true)
               }}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className=" pl-[60px] mt-[15px] w-[650px] h-[47px] outline-none bg-gray-100"
+              className={`flex items-center w-full h-[47px] outline-none rounded-lg shrink-1 ${isDark? 'bg-transparent': 'bg-gray-100'} `}
               value={searchQuery}
               placeholder="Search"
             />
-          </form>
+          
           {search === true && (
             <svg
               onClick={() => {
@@ -136,12 +160,12 @@ function Navbar(props) {
             </svg>
           )}
         </div>
-        <div className=" flex flex-row pt-[5px] justify-between items-center bg-white w-[150px] h-[40px] lg:ml-[900px] ml-[780px] mt-[10px]">
-          <div className="flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
+        <div className=" flex flex-row pt-[5px] justify-between items-center bg-inherit w-[150px] h-[40px] lg:ml-[900px] ml-[20px] mt-[10px]">
+          <div className={`flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200`}>
             <svg
               onClick={props.refresh}
               xmlns="http://www.w3.org/2000/svg"
-              className="cursor-pointer h-[23px]"
+              className={`cursor-pointer ${isDark? 'text-white': ''} h-[23px]`}
               version="1.1"
               viewBox="0 0 1200 1200"
             >
@@ -153,10 +177,11 @@ function Navbar(props) {
             <svg
               onClick={props.portraitView}
               xmlns="http://www.w3.org/2000/svg"
-              className="cursor-pointer h-[23px]"
+              className={`cursor-pointer ${isDark? 'text-gray-400': ''} h-[23px]`}
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
+
               stroke="currentColor"
             >
               <path
@@ -167,10 +192,11 @@ function Navbar(props) {
             </svg>
           </div>
 
-          <div className="flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
+          <div onClick={settings} className="flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
             <svg
+            
               xmlns="http://www.w3.org/2000/svg"
-              className="cursor-pointer h-[23px]"
+              className={`cursor-pointer ${isDark? 'text-gray-400': ''} h-[23px]`}
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -188,6 +214,13 @@ function Navbar(props) {
               />
             </svg>
           </div>
+          {isVisible == true && <div ref={setRef} className={`h-[50px] w-[120px] ${isDark? 'bg-dim': 'bg-white'} absolute right-[20px] rounded-sm border-[1px] shadow-lg top-[55px]`}>
+            <div onClick={darkMode} className={`flex items-center cursor-pointer justify-center w-full h-[30px] mt-[9px] ${isDark? 'hover:bg-gray-700' : 'hover:bg-gray-300'} `}>
+              {isDark ? (<p className="text-xs text-white">Light theme</p>) : (
+                <p className="text-xs text-gray-700">Dark theme</p>
+              )}
+            </div>
+          </div>}
         </div>
         <div
           onClick={logout}
@@ -200,7 +233,7 @@ function Navbar(props) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-4 h-4"
+              className={`w-4 h-4  ${isDark? 'text-gray-400': ''}`}
             >
               <path
                 strokeLinecap="round"
@@ -209,9 +242,10 @@ function Navbar(props) {
               />
             </svg>
           </div>
+          
         </div>
       </div>
-    </div>
+   
   );
 }
 

@@ -32,7 +32,7 @@ function RootLayout() {
       <Navbar HandleClick={HandleClick} portraitView={portraitView} refresh={refresh}  />
       <div className="flex flex-row flex-1 w-full h-full">
         <div
-          className={`flex flex-col shrink-0 pt-3 ${
+          className={`flex flex-col shrink-0 ${
             isOpen ? "w-[280px]" : "pl-[12px]"
           }`}
         >
