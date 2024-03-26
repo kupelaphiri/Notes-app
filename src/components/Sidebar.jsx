@@ -52,12 +52,13 @@ const isDarkMode = () => {
   return (
     <div className={`h-full pt-2 ${isDark? 'bg-dim': ''}`}>
      {sidebarOptions.map((option) => {
-      return ( <div onClick={() => {HandleNavigate(option.path)}} ref={optionsRef} key={option.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${isOpen? 'rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
+      return ( <div onClick={() => {HandleNavigate(option.path)}} ref={optionsRef} key={option.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${isOpen? 'sm:rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
       <div className={`px-[12px] ${isDark? 'text-gray-400' : 'text-gray-600'} `}>
        {option.icon}
        </div>
-       {isOpen && <p className={`ml-[20px] text-xs ${isDark? 'text-gray-400' : 'text-gray-800'} font-semibold`}>{option.title}</p>}
+       {isOpen && <p className={`ml-[20px] text-transparent text-xs ${isDark? 'sm:text-gray-400' : 'sm:text-gray-800'} font-semibold`}>{option.title}</p>}
       </div>)})}
+      
     </div>
   )
     }

@@ -1,11 +1,16 @@
 import React from 'react'
+import { useRef } from 'react';
+import useGlobal from '../hooks/useGlobal';
 
-function Modal({ isOpen, onClose, children }) {
+function Modal({ isOpen, onClose, children, ref }) {
+    const ModalRef = useRef(null)
+    const {isDark} = useGlobal()
     if (!isOpen) return null;
   return (
     
         <div
             onClick={onClose}
+            ref={ref}
             style={{
                 position: "fixed",
                 top: 0,
@@ -19,7 +24,7 @@ function Modal({ isOpen, onClose, children }) {
             }}
         >
             <div
-            className=' bg-white w-[640px] m-auto p-[2%] rounded-md overflow-y-auto max-h-[425px]'
+            className={`${isDark ? 'bg-dim': 'bg-white'} w-[640px] m-auto p-[2%] rounded-md overflow-y-auto max-h-[425px]`}
                 // style={{
                 //     background: "white",
                 //     height: 150,

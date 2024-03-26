@@ -4,7 +4,7 @@ import Masonry from "react-masonry-css";
 import "./Mainpage.css";
 import { usePageVisibility } from "../hooks/usePageVisibility";
 import useGlobal from "../hooks/useGlobal";
-import { removeObjectWithId } from "../utilities/Reusables";
+import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
 import 'ldrs/ring'
 import { ring } from 'ldrs'
 
@@ -22,7 +22,8 @@ function Archivepage() {
   const [isOpen, setIsOpen] = useOutletContext();
   const [isLoading, setIsLoading] = useState(false);
   const isPageVisible = usePageVisibility();
-  const timerIdRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false)
+  const [isDeleted, setIsDeleted] = useState(false)
   const {isDark} = useGlobal()
 
   const getNotes = async () => {
@@ -104,6 +105,7 @@ function Archivepage() {
       console.log("results", result, currentNotes);
       setArchivedNotes(result);
       refreshNotes();
+      setIsVisible(true)
     } catch (error) {
       console.log("error", error);
     }
@@ -283,6 +285,41 @@ function Archivepage() {
           )}
         </div>
       )}
+      {isVisible && (
+          <div
+            className={`absolute flex items-center flex-nowrap pl-[15px] bottom-[20px] left-[30px] h-[64px] w-full max-w-[512px] ${
+              isDark ? "bg-black" : "bg-dim"
+            } `}
+          >
+            {isDeleted ? (
+              <p className="text-xs text-white">Note deleted</p>
+            ) : (
+              <p className="text-xs text-white">Note unarchived</p>
+            )}
+            <div className="flex items-center justify-center w-[60px] h-[40px] hover:bg-slate-400 ml-[290px]">
+              <button className="text-amber-100 text-xs">
+                Undo
+              </button>
+            </div>
+            <svg
+              onClick={() => {
+                setIsVisible(false);
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-[24px] h-[24px] text-white ml-[15px] mr-[10px] cursor-pointer"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+        )}
     </div>
   );
 }
