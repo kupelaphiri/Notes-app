@@ -19,6 +19,7 @@ function Navbar(props) {
   const location = useLocation();
   const {setSearchResults} = useGlobal()
   const [isVisible, setIsVisible] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707)
   const {isDark, setIsDark} = useGlobal()
   const { useOutsideClickDetector } = useUtilities();
   
@@ -36,6 +37,11 @@ function Navbar(props) {
       setSearch(false);
     } 
   };
+
+  const updateMedia = () => {
+    setIsDesktop(window.innerWidth > 707)
+  }
+
 
   const settings = () => {
     setIsVisible(true)
@@ -99,13 +105,19 @@ function Navbar(props) {
     query();
   }, [searchQuery]);
 
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+
   // useEffect(() => {
   //   console.log("searchQuery", searchQuery);
   // }, [searchQuery]);
 
   return (
     
-      <div className={`flex flex-row ${isDark? 'bg-dim' : ''} h-[64px] w-full mb-0 border-b-[1px]`}>
+      <div className={`flex flex-row ${isDark? 'bg-dim' : ''} h-[64px] w-full mb-0 border-b-[1px] shrink`}>
         <div className="flex mt-[5px] items-center ml-[10px] mr-[20px] h-[48px]">
           <div
             onClick={props.HandleClick}
@@ -116,11 +128,12 @@ function Navbar(props) {
             </svg>
           </div>
 
-          <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />     
-           <span className={`ml-[20px] ${isDark? 'text-white': ''}`}>Notify</span>
-        
+          <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />  
+            
+           <span className={` ${isDesktop ? 'ml-[20px]' : 'ml-[10px]'} hidden s:block font-semibold  ${isDark? 'text-white': ''}`}>Notify</span>
+         
         </div>
-        <div className={`flex flex-row ml-[50px] mt-[6px] rounded-lg ${isDark? 'bg-light-dim': 'bg-gray-100'} h-[47px] shrink w-full max-w-[800px]`}>
+        {isDesktop ? (<div className={`flex flex-row ml-[50px] mt-[6px] rounded-lg ${isDark? 'bg-light-dim': 'bg-gray-100'} h-[47px] shrink w-full max-w-[800px]`}>
           <svg className="mt-[12px] ml-[15px] h-[40px] w-[40px] cursor-pointer">
             <path
              
@@ -159,9 +172,17 @@ function Navbar(props) {
               />
             </svg>
           )}
-        </div>
-        <div className=" flex flex-row pt-[5px] justify-between items-center bg-inherit w-[150px] h-[40px] lg:ml-[900px] ml-[20px] mt-[10px]">
-          <div className={`flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200`}>
+        </div>) : (
+          <div className="flex items-center ml-[50px] m:ml-[80px] mx:ml-[150px] sx:ml-[220px] ms:ml-[280px]">
+             <svg className="mt-[20px] h-[40px] w-[40px] cursor-pointer">
+            <path
+              d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"
+            ></path>
+          </svg>
+          </div>
+        )}
+        <div className="flex flex-row pt-[5px] justify-between items-center bg-inherit w-[150px] h-[40px] s:ml-0 lg:ml-[900px] mt-[10px]">
+          <div className={`flex flex-row items-center justify-center h-[40px] w-[40px] ml-0 sm:ml-[15px] cursor-pointer rounded-full hover:bg-gray-200`}>
             <svg
               onClick={props.refresh}
               xmlns="http://www.w3.org/2000/svg"
@@ -224,9 +245,9 @@ function Navbar(props) {
         </div>
         <div
           onClick={logout}
-          className="flex ml-[60px] cursor-pointer justify-center items-center"
+          className={`flex ${isDesktop? 'ml-[60px]' : 'ml-0'}  cursor-pointer justify-center items-center`}
         >
-          <div className="flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
+          <div className="flex flex-row items-center justify-center mt-[2px] h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

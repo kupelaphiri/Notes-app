@@ -1,11 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import useGlobal from "../hooks/useGlobal";
 import { useRef } from 'react';
 
 
-function Sidebar({isOpen}) {
+function Sidebar(props) {
 const {isDark} = useGlobal()
 const optionsRef = useRef()
 const sidebarOptions = [{
@@ -49,14 +49,21 @@ const isDarkMode = () => {
   }
 }
 
+
+
+useEffect(() => {
+  window.addEventListener("resize", props.updateMedia);
+  return () => window.removeEventListener("resize", props.updateMedia);
+});
+
   return (
-    <div className={`h-full pt-2 ${isDark? 'bg-dim': ''}`}>
+    <div className={`h-full pt-2 z-1 ${isDark? 'bg-dim': ''}`}>
      {sidebarOptions.map((option) => {
-      return ( <div onClick={() => {HandleNavigate(option.path)}} ref={optionsRef} key={option.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${isOpen? 'sm:rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
+      return ( <div onClick={() => {HandleNavigate(option.path)}} ref={optionsRef} key={option.id} className={`flex flex-row items-center h-[48px] w-full cursor-pointer ${props.isOpen? 'rounded-r-3xl pl-[12px]' : 'rounded-full'} ${isPathSelected(option.path)? 'bg-amber-100' : 'hover:bg-gray-200'} `}>
       <div className={`px-[12px] ${isDark? 'text-gray-400' : 'text-gray-600'} `}>
        {option.icon}
        </div>
-       {isOpen && <p className={`ml-[20px] text-transparent text-xs ${isDark? 'sm:text-gray-400' : 'sm:text-gray-800'} font-semibold`}>{option.title}</p>}
+       {props.isOpen && <p className={`ml-[20px] text-transparent text-xs ${isDark? 'text-gray-500' : 'text-gray-800'} font-semibold`}>{option.title}</p>}
       </div>)})}
       
     </div>

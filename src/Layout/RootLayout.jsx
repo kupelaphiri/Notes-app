@@ -8,8 +8,8 @@ import useGlobal from "../hooks/useGlobal";
 function RootLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [isOn, setIsOn] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
-  const {searchResults, setSearchResults} = useGlobal()
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707)
+  
 
   const HandleClick = () => {
     setIsOpen((current) => !current);
@@ -37,6 +37,12 @@ function RootLayout() {
   //   }
   // };
 
+  const updateMedia = () => {
+    setIsDesktop(window.innerWidth > 707)
+    setIsOpen(false)
+  }
+  
+
   const portraitView = () => {
     setIsOn((current) => !current);
     console.log("functon call");
@@ -46,9 +52,8 @@ function RootLayout() {
     window.location.reload();
   }
 
-  useEffect(()=> {
-    console.log('isOpen', isOpen)
-  }, [isOpen])
+ 
+
 
   return (
     <div className="h-full w-full text-black">
@@ -56,10 +61,10 @@ function RootLayout() {
       <div className="flex flex-row flex-1 w-full h-full">
         <div
           className={`flex flex-col w-[60px] shrink ${
-            isOpen ? "sm:w-[280px]" : "pl-[12px]"
+            isOpen ? "xs:w-[280px] shadow-xl sm:shadow-none" : "pl-[12px]"
           }`}
         >
-          <Sidebar isOpen={isOpen} />
+          <Sidebar isOpen={isOpen} isDesktop={isDesktop} updateMedia={updateMedia} />
         </div>
         <div className="h-full w-full overflow-y-auto flex-1 shrink-0">
           <Outlet context={[isOn, setIsOn, isOpen, setIsOpen ]} />

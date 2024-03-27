@@ -99,7 +99,7 @@ function Mainpage() {
     1560: 4,
     1307: 3,
     1033: 2,
-    792: 1,
+    728: 1,
   };
 
   //moves the note to trash
@@ -241,7 +241,7 @@ function Mainpage() {
   return (
     <>
       <div
-        className={`flex h-screen bg-inherit flex-col w-full min-h-full ${
+        className={`flex h-screen bg-inherit overflow-x-hidden shrink -z-1 flex-col w-full min-h-full ${
           isLoading ? "justify-center items-center" : ""
         } ${
           backendPinnedData == null ? "overflow-y-hidden" : ""
@@ -262,7 +262,7 @@ function Mainpage() {
                 ref={InputRef}
                 className={`flex flex-col m-8  ${
                   isActive ? "min-h-[136px]" : "h-[46px]"
-                } bg-inherit w-[598px] border rounded-lg pl-5 shadow-lg`}
+                } bg-inherit w-full min-w-[400px] max-w-[598px] border rounded-lg pl-5 shadow-lg`}
               >
                 <input
                   onChange={(e) => setTitle(e.target.value)}
@@ -356,8 +356,8 @@ function Mainpage() {
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
-                                isOn ? "w-[597px]" : ""
+                              className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 sm:max-h-[452px]  overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                                isOn ? "sm:w-[597px] w-[400px]" : ""
                               }`}
                             >
                               <div
@@ -433,7 +433,7 @@ function Mainpage() {
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col w-full max-w-[500px] sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                              className={`flex flex-col w-[400px] max-w-[500px] sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                                 isOn ? "w-[597px]" : ""
                               }`}
                             >
