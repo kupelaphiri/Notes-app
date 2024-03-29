@@ -29,6 +29,8 @@ function Mainpage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noteID, setNoteID] = useState(null);
+  const [isUndone, setIsUndone] = useState(false)
+
 
   const InputRef = useRef(null);
   const ModalRef = useRef(null);
@@ -154,6 +156,10 @@ function Mainpage() {
     setIsVisible(false)
   }, 10000);
 
+  setTimeout(() => {
+    setIsUndone(false)
+  }, 5000);
+
   const restoreNote = async () => {
     try {
       await fetch("http://localhost:5000/restore-note", {
@@ -165,6 +171,9 @@ function Mainpage() {
         }),
       });
       refreshNotes();
+      setIsVisible(false)
+      setIsUndone(true)
+      
     } catch (error) {
       console.log(error);
     }
@@ -207,8 +216,7 @@ function Mainpage() {
       const note = { title: title.trim(), body: body.trim() };
       console.log(note);
 
-      setTitle("");
-      setBody("");
+      
 
       fetch("http://localhost:5000/add-note", {
         method: "POST",
@@ -219,6 +227,8 @@ function Mainpage() {
         try {
           console.log(res);
           const response = await res.json();
+          setTitle("");
+          setBody("");
           console.log("wababade", response);
           setBackendPinnedData((prev) => {
             const newArr = [...prev];
@@ -278,6 +288,7 @@ function Mainpage() {
                 />
                 <TextareaAutosize
                   onChange={(e) => setBody(e.target.value)}
+                  value={body}
                   onFocus={focus}
                   className={`w-[400px] bg-inherit ${
                     isDark
@@ -286,7 +297,7 @@ function Mainpage() {
                   } h-auto outline-none resize-none ${isActive ? "" : "mt-1"} `}
                   placeholder="Take a note..."
                 >
-                  {body}
+                
                 </TextareaAutosize>
 
                 <button
@@ -433,12 +444,12 @@ function Mainpage() {
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col w-[400px] max-w-[500px] sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                              className={`flex flex-col w-[400px] max-w-[500px] text-ellipsis sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                                 isOn ? "w-[597px]" : ""
                               }`}
                             >
                               <div
-                                className="w-full h-full pr-3 text-ellipsis pl-3 pb-8"
+                                className="w-full max-w-[400px] overflow-hidden h-full pr-3 text-ellipsis pl-3 pb-8"
                                 onClick={() => {
                                   setModalData(note);
                                   setModalTitle(note);
@@ -454,7 +465,7 @@ function Mainpage() {
                                   {note.title}
                                 </h2>
                                 <p
-                                  className={`text-sm ${
+                                  className={`text-sm text-ellipsis ${
                                     isDark ? "text-white" : ""
                                   } mt-1`}
                                 >
@@ -514,7 +525,7 @@ function Mainpage() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6 ml-[570px] cursor-pointer"
+                        class="w-6 h-6 ml-[550px] cursor-pointer"
                       >
                         <path
                           stroke-linecap="round"
@@ -580,7 +591,7 @@ function Mainpage() {
 
         {isVisible && (
           <div
-            className={`absolute flex items-center pl-[15px] bottom-[20px] left-[30px] h-[64px] w-full max-w-[512px] ${
+            className={`absolute flex items-center rounded-sm pl-[15px] bottom-[20px] left-[30px] h-[64px] w-full max-w-[512px] ${
               isDark ? "bg-black" : "bg-dim"
             } `}
           >
@@ -613,6 +624,30 @@ function Mainpage() {
             </svg>
           </div>
         )}
+         {isUndone && <div
+            className={`absolute flex items-center rounded-sm flex-nowrap pl-[15px] bottom-[20px] left-[30px] h-[64px] w-full max-w-[512px] ${
+              isDark ? "bg-black" : "bg-dim"
+            } `}
+          >
+            <p className="text-xs text-white whitespace-nowrap">Action undone</p>
+            <svg
+              onClick={() => {
+                setIsUndone(false);
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-[24px] h-[24px] text-white ml-[370px] mr-[10px] cursor-pointer"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </div>}
       </div>
     </>
   );

@@ -63,7 +63,7 @@ useEffect(() => {
       <div className={`px-[12px] ${isDark? 'text-gray-400' : 'text-gray-600'} `}>
        {option.icon}
        </div>
-       {props.isOpen && <p className={`ml-[20px] text-transparent text-xs ${isDark? 'text-gray-500' : 'text-gray-800'} font-semibold`}>{option.title}</p>}
+       {props.isOpen && <p className={`ml-[20px] text-xs ${isDark? 'text-gray-400' : 'text-gray-800'} font-semibold`}>{option.title}</p>}
       </div>)})}
       
     </div>

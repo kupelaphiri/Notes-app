@@ -117,7 +117,7 @@ function Navbar(props) {
 
   return (
     
-      <div className={`flex flex-row ${isDark? 'bg-dim' : ''} h-[64px] w-full mb-0 border-b-[1px] shrink`}>
+      <div className={`flex flex-row ${isDark? 'bg-dim' : ''} h-[64px] w-full mb-0 border-b-[1px]`}>
         <div className="flex mt-[5px] items-center ml-[10px] mr-[20px] h-[48px]">
           <div
             onClick={props.HandleClick}
