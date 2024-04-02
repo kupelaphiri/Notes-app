@@ -10,6 +10,7 @@ import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
 import "ldrs/ring";
 import { ring } from "ldrs";
 import useGlobal from "../hooks/useGlobal";
+import { BASE_URL } from "../constants";
 
 ring.register();
 
@@ -29,8 +30,7 @@ function Mainpage() {
   const [isVisible, setIsVisible] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [noteID, setNoteID] = useState(null);
-  const [isUndone, setIsUndone] = useState(false)
-
+  const [isUndone, setIsUndone] = useState(false);
 
   const InputRef = useRef(null);
   const ModalRef = useRef(null);
@@ -49,12 +49,10 @@ function Mainpage() {
     setOpen(false);
   };
 
-
-
   const getNotes = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/all-notes`, {
+      const res = await fetch(`${BASE_URL}/all-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -75,7 +73,7 @@ function Mainpage() {
 
   const refreshNotes = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/all-notes`, {
+      const res = await fetch(`${BASE_URL}/all-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -107,7 +105,7 @@ function Mainpage() {
   //moves the note to trash
   const deleteNote = (id) => {
     setNoteID(id);
-    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/delete-note`, {
+    fetch(`${BASE_URL}/delete-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -134,7 +132,7 @@ function Mainpage() {
 
   const archiveNote = (id) => {
     setNoteID(id);
-    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/archive-note`, {
+    fetch(`${BASE_URL}/archive-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -153,16 +151,16 @@ function Mainpage() {
   };
 
   setTimeout(() => {
-    setIsVisible(false)
+    setIsVisible(false);
   }, 10000);
 
   setTimeout(() => {
-    setIsUndone(false)
+    setIsUndone(false);
   }, 5000);
 
   const restoreNote = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/restore-note`, {
+      await fetch(`${BASE_URL}/restore-note`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -171,9 +169,8 @@ function Mainpage() {
         }),
       });
       refreshNotes();
-      setIsVisible(false)
-      setIsUndone(true)
-      
+      setIsVisible(false);
+      setIsUndone(true);
     } catch (error) {
       console.log(error);
     }
@@ -187,7 +184,7 @@ function Mainpage() {
       const { title, body } = { title: modalTitle, body: modalBody };
       console.log("note", title, body);
 
-      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/edit-note`, {
+      fetch(`${BASE_URL}/edit-note`, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -215,10 +212,10 @@ function Mainpage() {
       if (e) e.preventDefault();
       const note = { title: title.trim(), body: body.trim() };
       console.log(note);
-      
+
       setTitle("");
       setBody("");
-      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/add-note`, {
+      fetch(`${BASE_URL}/add-note`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(note),
@@ -227,7 +224,7 @@ function Mainpage() {
         try {
           console.log(res);
           const response = await res.json();
-         
+
           console.log("wababade", response);
           setBackendPinnedData((prev) => {
             const newArr = [...prev];
@@ -295,9 +292,7 @@ function Mainpage() {
                       : "placeholder-black"
                   } h-auto outline-none resize-none ${isActive ? "" : "mt-1"} `}
                   placeholder="Take a note..."
-                >
-                
-                </TextareaAutosize>
+                ></TextareaAutosize>
 
                 <button
                   onClick={handleSubmit}
@@ -532,23 +527,26 @@ function Mainpage() {
                           d="M6 18 18 6M6 6l12 12"
                         />
                       </svg>
-
                     </div>
-                  <div className="h-full w-full overflow-y-auto">
+                    <div className="h-full w-full overflow-y-auto">
                       <input
                         value={modalTitle.title}
-                        className={`outline-none ${isDark? 'text-white' : ''} bg-inherit`}
+                        className={`outline-none ${
+                          isDark ? "text-white" : ""
+                        } bg-inherit`}
                         onKeyUp={(e) => setModalTitle(e.target.value)}
                       />
-                    <div className="w-full h-full overflow-y-auto">
-                     <TextareaAutosize
-                      className={`w-full bg-inherit ${isDark? 'text-white' : ''} outline-none  text-sm resize-none`}
-                      onChange={(e) => setModalBody(e.target.value)}
-                     >
-                      {modalBody.body}
-                     </TextareaAutosize>
-                   </div>
-                   </div>
+                      <div className="w-full h-full overflow-y-auto">
+                        <TextareaAutosize
+                          className={`w-full bg-inherit ${
+                            isDark ? "text-white" : ""
+                          } outline-none  text-sm resize-none`}
+                          onChange={(e) => setModalBody(e.target.value)}
+                        >
+                          {modalBody.body}
+                        </TextareaAutosize>
+                      </div>
+                    </div>
                     <div className="flex flex-row  w-full">
                       <svg
                         onClick={() => deleteNote(modalData._id)}
@@ -584,7 +582,6 @@ function Mainpage() {
                         Edit
                       </button>
                     </div>
-                
                   </Modal>
                 )}
               </div>
@@ -627,12 +624,15 @@ function Mainpage() {
             </svg>
           </div>
         )}
-         {isUndone && <div
+        {isUndone && (
+          <div
             className={`absolute flex items-center rounded-sm flex-nowrap pl-[15px] bottom-[20px] left-[30px] h-[64px] w-full max-w-[512px] ${
               isDark ? "bg-black" : "bg-dim"
             } `}
           >
-            <p className="text-xs text-white whitespace-nowrap">Action undone</p>
+            <p className="text-xs text-white whitespace-nowrap">
+              Action undone
+            </p>
             <svg
               onClick={() => {
                 setIsUndone(false);
@@ -650,7 +650,8 @@ function Mainpage() {
                 d="M6 18 18 6M6 6l12 12"
               />
             </svg>
-          </div>}
+          </div>
+        )}
       </div>
     </>
   );

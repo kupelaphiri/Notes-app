@@ -3,6 +3,7 @@ import useAuth from "./hooks/useAuth";
 import RootLayout from "./Layout/RootLayout";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "./context/AuthProvide";
+import { BASE_URL } from "./constants";
 
 const RequireAuth = ({ children }) => {
   const { auth, setAuth } = useAuth();
@@ -16,7 +17,7 @@ const RequireAuth = ({ children }) => {
   const getCookie = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/get-cookies`, {
+      const res = await fetch(`${BASE_URL}/get-cookies`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
@@ -42,7 +43,7 @@ const RequireAuth = ({ children }) => {
 
   const refreshToken = async () => {
     try {
-      const refresh = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/refresh-token`, {
+      const refresh = await fetch(`${BASE_URL}/refresh-token`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         withCredentials: true,

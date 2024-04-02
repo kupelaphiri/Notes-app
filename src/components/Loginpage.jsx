@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import useAuth from "../hooks/useAuth";
 import Cookies from "js-cookie";
+import { BASE_URL } from "../constants";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -36,16 +37,13 @@ function Loginpage() {
     setErrMsg("");
   }, [user, pwd]);
 
-  
-  
- const click = useCallback((e)=> {
-  e.preventDefault()
-   const HandleNavigate = (path) => {
-     locate(path);
-     
-   };
-HandleNavigate('/signup')
- }, [])
+  const click = useCallback((e) => {
+    e.preventDefault();
+    const HandleNavigate = (path) => {
+      locate(path);
+    };
+    HandleNavigate("/signup");
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +52,7 @@ HandleNavigate('/signup')
       console.log("details", loginDetails);
       setAuth(loginDetails);
 
-      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/auth`, {
+      fetch(`${BASE_URL}/auth`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
