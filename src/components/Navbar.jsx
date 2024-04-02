@@ -61,7 +61,7 @@ function Navbar(props) {
 
   const logout = async () => {
     try {
-      const res = await fetch("http://localhost:5000/logout", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/logout`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
@@ -82,7 +82,7 @@ function Navbar(props) {
 
   const query = async () => {
     try {
-     const res = await fetch(`http://localhost:5000/search-notes/?q=${searchQuery}`, {
+     const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/search-notes/?q=${searchQuery}`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",

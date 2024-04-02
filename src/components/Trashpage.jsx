@@ -3,7 +3,6 @@ import Masonry from "react-masonry-css";
 import { useOutletContext } from "react-router-dom";
 import "./Mainpage.css";
 import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import "ldrs/ring";
 import { ring } from "ldrs";
 import useGlobal from "../hooks/useGlobal";
@@ -31,7 +30,7 @@ function Trashpage() {
   }, []);
 
   const refreshNotes = async () => {
-    const res = await fetch("http://localhost:5000/deleted-notes", {
+    const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/deleted-notes`, {
       method: "GET",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -46,7 +45,7 @@ function Trashpage() {
 
   const getNotes = async () => {
     setisLoading(true);
-    const res = await fetch("http://localhost:5000/deleted-notes", {
+    const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/deleted-notes`, {
       method: "GET",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -64,7 +63,7 @@ function Trashpage() {
   const restoreNote = async (id) => {
     console.log("id", id);
     try {
-      await fetch("http://localhost:5000/restore-note", {
+      await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/restore-note`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -83,7 +82,7 @@ function Trashpage() {
 
   const permanentDelete = (id) => {
     console.log("id", id);
-    fetch("http://localhost:5000/permanent-delete-notes", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/permanent-delete-notes`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -108,7 +107,7 @@ function Trashpage() {
   };
 
   const deleteAll = () => {
-    fetch("http://localhost:5000/delete-all", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/delete-all`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -190,7 +189,7 @@ function Trashpage() {
                                   setModalBody(note);
                                   setOpen(true);
                                 }}
-                                 className="w-full h-full pr-3 text-ellipsis pl-3 pb-8">
+                                 className="w-full h-full pr-3 text-ellipsis overflow-hidden pl-3 pb-8">
                           <h2 className={`text-xs ${isDark? 'text-white': ''}`}>{note.title}</h2>
                           <p className={`text-xs ${isDark? 'text-white': ''}`}>{note.body}</p>
                         </div>
@@ -250,7 +249,7 @@ function Trashpage() {
                                   setModalBody(note);
                                   setOpen(true);
                                 }} 
-                                className="w-full h-full pr-3 text-ellipsis pl-3 pb-8">
+                                className="w-full h-full pr-3 text-ellipsis overflow-hidden pl-3 pb-8">
                             <h2 className={`text-xs ${isDark? 'text-white' : ''}`}>{note.title}</h2>
                             <p className={`text-xs ${isDark? 'text-white': ''}`}>{note.body}</p>
                           </div>
@@ -308,20 +307,24 @@ function Trashpage() {
                         />
                       </svg>
 
+                    </div>
+                    <div className="w-full overflow-y-auto">
                       <h3
                        
                         className={`outline-none ${isDark? 'text-white' : ''} bg-inherit`}
                         
                       >{modalTitle.title}</h3>
-                    </div>
+                      <div className="w-full overflow-y-auto">
                     <p
                       className={`w-full bg-inherit ${isDark? 'text-white' : ''}  outline-none text-sm resize-none`}
                       
                     >
                       {modalBody.body}
                     </p>
+                    </div>
+                    </div>
 
-                    <div className="flex flex-row sticky w-full">
+                    <div className="flex flex-row w-full">
                       <svg
                         onClick={() => permanentDelete(modalData._id)}
                         className=" hidden-content w-[20px] ml-[2px] cursor-pointer"

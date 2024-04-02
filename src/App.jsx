@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 
 
-const ENDPOINT = "http://localhost:5000";
+
 
 
 

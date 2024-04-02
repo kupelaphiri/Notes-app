@@ -54,7 +54,7 @@ function Mainpage() {
   const getNotes = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/all-notes", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/all-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -75,7 +75,7 @@ function Mainpage() {
 
   const refreshNotes = async () => {
     try {
-      const res = await fetch("http://localhost:5000/all-notes", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/all-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -107,7 +107,7 @@ function Mainpage() {
   //moves the note to trash
   const deleteNote = (id) => {
     setNoteID(id);
-    fetch("http://localhost:5000/delete-note", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/delete-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -134,7 +134,7 @@ function Mainpage() {
 
   const archiveNote = (id) => {
     setNoteID(id);
-    fetch("http://localhost:5000/archive-note", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/archive-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -162,7 +162,7 @@ function Mainpage() {
 
   const restoreNote = async () => {
     try {
-      await fetch("http://localhost:5000/restore-note", {
+      await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/restore-note`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -187,7 +187,7 @@ function Mainpage() {
       const { title, body } = { title: modalTitle, body: modalBody };
       console.log("note", title, body);
 
-      fetch("http://localhost:5000/edit-note", {
+      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/edit-note`, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -215,10 +215,10 @@ function Mainpage() {
       if (e) e.preventDefault();
       const note = { title: title.trim(), body: body.trim() };
       console.log(note);
-
       
-
-      fetch("http://localhost:5000/add-note", {
+      setTitle("");
+      setBody("");
+      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/add-note`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(note),
@@ -227,8 +227,7 @@ function Mainpage() {
         try {
           console.log(res);
           const response = await res.json();
-          setTitle("");
-          setBody("");
+         
           console.log("wababade", response);
           setBackendPinnedData((prev) => {
             const newArr = [...prev];
@@ -515,7 +514,7 @@ function Mainpage() {
 
                 {open === true && (
                   <Modal ref={ModalRef} isOpen={open}>
-                    <div className=" flex flex-col w-full h-full">
+                    <div className="flex flex-col w-full  h-full">
                       <svg
                         onClick={() => {
                           setOpen(false);
@@ -534,20 +533,23 @@ function Mainpage() {
                         />
                       </svg>
 
+                    </div>
+                  <div className="h-full w-full overflow-y-auto">
                       <input
                         value={modalTitle.title}
                         className={`outline-none ${isDark? 'text-white' : ''} bg-inherit`}
                         onKeyUp={(e) => setModalTitle(e.target.value)}
                       />
-                    </div>
-                    <TextareaAutosize
-                      className={`w-full bg-inherit ${isDark? 'text-white' : ''}  outline-none text-sm resize-none`}
+                    <div className="w-full h-full overflow-y-auto">
+                     <TextareaAutosize
+                      className={`w-full bg-inherit ${isDark? 'text-white' : ''} outline-none  text-sm resize-none`}
                       onChange={(e) => setModalBody(e.target.value)}
-                    >
+                     >
                       {modalBody.body}
-                    </TextareaAutosize>
-
-                    <div className="flex flex-row sticky w-full">
+                     </TextareaAutosize>
+                   </div>
+                   </div>
+                    <div className="flex flex-row  w-full">
                       <svg
                         onClick={() => deleteNote(modalData._id)}
                         className=" hidden-content w-[20px] ml-[2px] cursor-pointer"
@@ -582,6 +584,7 @@ function Mainpage() {
                         Edit
                       </button>
                     </div>
+                
                   </Modal>
                 )}
               </div>

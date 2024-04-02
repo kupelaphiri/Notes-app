@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import "./Mainpage.css";
 import { usePageVisibility } from "../hooks/usePageVisibility";
+import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import useGlobal from "../hooks/useGlobal";
 import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
 import 'ldrs/ring'
 import { ring } from 'ldrs'
+import Modal from "./Modal";
+
 
 
 ring.register();
@@ -22,7 +25,6 @@ function Archivepage() {
   const [isOn, setIsOn] = useOutletContext();
   const [isOpen, setIsOpen] = useOutletContext();
   const [isLoading, setIsLoading] = useState(false);
-  const isPageVisible = usePageVisibility();
   const [isVisible, setIsVisible] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
   const [noteID, setNoteID] = useState(null)
@@ -32,7 +34,7 @@ function Archivepage() {
   const getNotes = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/archived-notes", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/archived-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -60,7 +62,7 @@ function Archivepage() {
 
   const refreshNotes = async () => {
     try {
-      const res = await fetch("http://localhost:5000/archived-notes", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/archived-notes`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -96,7 +98,7 @@ function Archivepage() {
     setNoteID(id)
 
     try {
-      await fetch("http://localhost:5000/unarchive", {
+      await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/unarchive`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         credentials: "include",
@@ -110,6 +112,7 @@ function Archivepage() {
       setArchivedNotes(result);
       refreshNotes();
       setIsVisible(true)
+      setIsModalOpen(false)
     } catch (error) {
       console.log("error", error);
     }
@@ -117,7 +120,7 @@ function Archivepage() {
 
   const archiveNote = () => {
     
-    fetch("http://localhost:5000/archive-note", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/archive-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -138,7 +141,7 @@ function Archivepage() {
   const deleteNote = (id) => {
     
     setNoteID(id)
-    fetch("http://localhost:5000/delete-note", {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/delete-note`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
@@ -152,7 +155,37 @@ function Archivepage() {
     setArchivedNotes(result);
     setIsVisible(true)
     setIsDeleted(true)
+    setIsModalOpen(false)
+    refreshNotes()
   };
+
+  const editNote = useCallback(
+    (e) => {
+      e.preventDefault();
+      const noteid = modalData._id;
+      console.log("noteid", noteid);
+      const { title, body } = { title: modalTitle, body: modalBody };
+      console.log("note", title, body);
+
+      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/edit-note`, {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          noteid,
+          title,
+          body,
+        }),
+      }).then(async (res) => {
+        console.log(res);
+        if (res.ok) {
+          setIsModalOpen(false);
+          getNotes();
+        }
+      });
+    },
+    [modalTitle, modalBody]
+  );
 
   setTimeout(() => {
     setIsVisible(false)
@@ -161,6 +194,7 @@ function Archivepage() {
   setTimeout(() => {
     setIsUndone(false)
   }, 5000);
+
 
 
   const breakpointColumnsObj = {
@@ -275,12 +309,12 @@ function Archivepage() {
                           }`}
                         >
                           <div
-                            className="w-full h-full pr-3 pl-3 pb-9"
+                            className="w-full h-full pr-3 pl-3 overflow-hidden pb-9"
                             onClick={() => {
                               setModalData(note);
                               setModalTitle(note);
                               setModalBody(note);
-                              setOpen(true);
+                              setIsModalOpen(true);
                             }}
                           >
                             <h2 className={`text-xs ${isDark? 'text-white': ''}`}>{note.title}</h2>
@@ -292,7 +326,7 @@ function Archivepage() {
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 20 20"
                               fill="currentColor"
-                              className="invisible group-hover:visible w-[20px] cursor-pointer"
+                              className={`invisible ${isDark? 'text-gray-400' : ''} group-hover:visible w-[20px] cursor-pointer`}
                             >
                               <path
                                 fillRule="evenodd"
@@ -322,18 +356,18 @@ function Archivepage() {
                   </Masonry>
                 </div>
               )}
-              {isModalOpen && <Modal ref={ModalRef} isOpen={open}>
+              {isModalOpen && <Modal isOpen={isModalOpen}>
                     <div className=" flex flex-col w-full h-full">
                       <svg
                         onClick={() => {
-                          setOpen(false);
+                          setIsModalOpen(false);
                         }}
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6 ml-[570px] cursor-pointer"
+                        className={`w-6 h-6 ${isDark? 'text-gray-400' : ''} ml-[570px] cursor-pointer`}
                       >
                         <path
                           stroke-linecap="round"
@@ -342,23 +376,41 @@ function Archivepage() {
                         />
                       </svg>
 
+                    </div>
+                  <div className="h-full w-full overflow-y-auto">
                       <input
                         value={modalTitle.title}
                         className={`outline-none ${isDark? 'text-white' : ''} bg-inherit`}
                         onKeyUp={(e) => setModalTitle(e.target.value)}
                       />
-                    </div>
+                  <div className="w-full h-full overflow-y-auto">
+              
                     <TextareaAutosize
                       className={`w-full bg-inherit ${isDark? 'text-white' : ''}  outline-none text-sm resize-none`}
                       onChange={(e) => setModalBody(e.target.value)}
                     >
                       {modalBody.body}
                     </TextareaAutosize>
+                    </div>
+                    </div>
 
-                    <div className="flex flex-row sticky w-full">
+                    <div className="flex flex-row w-full">
+                      <svg
+                            onClick={() => unarchive(modalData._id)}
+                             xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                              className={` w-[20px] ${isDark? 'text-gray-400' : ''} cursor-pointer`}
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M13.75 7h-3V3.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0L6.2 4.74a.75.75 0 0 0 1.1 1.02l1.95-2.1V7h-3A2.25 2.25 0 0 0 4 9.25v7.5A2.25 2.25 0 0 0 6.25 19h7.5A2.25 2.25 0 0 0 16 16.75v-7.5A2.25 2.25 0 0 0 13.75 7Zm-3 0h-1.5v5.25a.75.75 0 0 0 1.5 0V7Z"
+                                clip-rule="evenodd"
+                              />
+                            </svg>
                       <svg
                         onClick={() => deleteNote(modalData._id)}
-                        className=" hidden-content w-[20px] ml-[2px] cursor-pointer"
+                        className={`hidden-content ${isDark? 'text-gray-400' : ''} w-[20px] ml-[2px] cursor-pointer`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
@@ -369,23 +421,9 @@ function Archivepage() {
                           clip-rule="evenodd"
                         />
                       </svg>
-                      <svg
-                        onClick={() => archiveNote(modalData._id)}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="hidden-content w-[20px] cursor-pointer"
-                      >
-                        <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                        <path
-                          fillRule="evenodd"
-                          d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
                       <button
                         onClick={editNote}
-                        className="ml-[500px] p-1 hover:bg-gray-100"
+                        className={`ml-[500px] ${isDark? 'text-white' : ''} p-1 hover:bg-gray-100`}
                       >
                         Edit
                       </button>

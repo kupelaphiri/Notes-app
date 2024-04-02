@@ -71,7 +71,7 @@ function Signup() {
         setSuccess(true)
         console.log(userDetails)
 
-    fetch('http://localhost:5000/add-user', {
+    fetch(`${import.meta.env.VITE_REACT_BASE_URL}/add-user`, {
       method: 'POST',
       headers: { "Content-type": "application/json" },
       credentials: 'include',

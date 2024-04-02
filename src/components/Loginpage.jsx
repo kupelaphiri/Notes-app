@@ -54,7 +54,7 @@ HandleNavigate('/signup')
       console.log("details", loginDetails);
       setAuth(loginDetails);
 
-      fetch("http://localhost:5000/auth", {
+      fetch(`${import.meta.env.VITE_REACT_BASE_URL}/auth`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         withCredentials: true,

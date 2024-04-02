@@ -16,7 +16,7 @@ const RequireAuth = ({ children }) => {
   const getCookie = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/get-cookies", {
+      const res = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/get-cookies`, {
         method: "GET",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
@@ -42,7 +42,7 @@ const RequireAuth = ({ children }) => {
 
   const refreshToken = async () => {
     try {
-      const refresh = await fetch("http://localhost:5000/refresh-token", {
+      const refresh = await fetch(`${import.meta.env.VITE_REACT_BASE_URL}/refresh-token`, {
         method: "POST",
         headers: { "Content-type": "application/json" },
         withCredentials: true,
