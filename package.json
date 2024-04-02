@@ -1,7 +1,7 @@
 {
   "name": "notes-app",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "https://notes-app-backend-u1ux.onrender.com",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
