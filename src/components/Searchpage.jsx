@@ -26,12 +26,11 @@ const breakpointColumnsObj = {
   return (
     <div className={`flex flex-col h-screen ${isDark? 'bg-dim' : 'bg-white'} w-full overflow-y-auto pb-[100px]`}>
     {searchResults.length === 0 && 
-      <div className='w-full h-full flex items-center justify-center'>
-        <svg className="w-[100px] text-gray-300">
-            <path
-              d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"
-            ></path>
-          </svg>
+      <div className='w-full h-full flex items-center justify-center flex-col'>
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-[100px] ${isDark? 'text-gray-400' : 'text-gray-300'}`}>
+  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+</svg>
+   <p className={`${isDark? 'text-gray-400': 'text-gray-600'} mt-[20px]`}>Search results will appear here</p>
       </div>
       }
 
@@ -48,14 +47,14 @@ const breakpointColumnsObj = {
         return (
          
             <div key={note.id} className={`flex flex-col w-[240px] hover-trigger cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4`}>
-              <div className='w-full h-full pr-3 text-ellipsis pl-3 pb-9'
+              <div className='w-full h-full pr-3 overflow-hidden text-ellipsis pl-3 pb-9'
                onClick={()=> {
                 setModalData(note)
                 setModalTitle(note);
                 setModalBody(note)
                 setOpen(true);
               }}>
-              <h2 className='font-bold text-xs'>{note.title}</h2>
+              <h2 className='text-xs'>{note.title}</h2>
               <p className='text-xs'>{note.body}</p>
                </div>
               <div className='flex flex-row justify-end pr-1 h-full w-full'>
