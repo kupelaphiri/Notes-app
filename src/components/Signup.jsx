@@ -8,6 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Signup.css";
 import { BASE_URL } from "../constants";
+import useAuth from "../hooks/useAuth";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,14 +33,17 @@ function Signup() {
   const [matchPwd, setMatchPwd] = useState("");
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
+  const [enabled, setEnabled] = useState(false)
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const {setAuth} = useAuth()
   const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   userRef.current.focus();
+  // }, []);
 
   useEffect(() => {
     setValidName(USER_REGEX.test(user));
@@ -66,46 +70,52 @@ function Signup() {
     HandleNavigate("/login");
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userDetails = {
-      name: user.trim(),
       email: email.trim(),
       password: pwd.trim(),
     };
     setSuccess(true);
     console.log(userDetails);
 
-    fetch(`${BASE_URL}/add-user`, {
+    try {
+      fetch(`${BASE_URL}/add-user`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       credentials: "include",
       body: JSON.stringify(userDetails),
     }).then(async (res) => {
-      try {
-        console.log(res);
-        const response = await res.json();
-        console.log("wababade", response);
-
+      const response = await res.json();
+      console.log("wababade", response);
+      if (res.ok) {
+        setAuth(response)
+        navigate(from, { replace: true });
         console.log("new user added");
-      } catch (error) {
-        console.log(error);
+      } else {
+        console.log('error');
       }
+     
     });
+    } catch (error) {
+      console.log(error)
+    }
+
+    
   };
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen overflow-hidden bg-blue-500">
+    <div className="flex justify-center items-center h-screen w-screen bg-blue-500">
       <div className="w-[400px] rounded p-5">
         {success ? (
           <section>
             <h1>Success!</h1>
             <p>
-              <a href="#">Sign In</a>
+              <a onClick={click} className="underline cursor-pointer">Sign In</a>
             </p>
           </section>
         ) : (
-          <section>
+          <section className="mt-[200px] mb-[200px]">
             <p
               ref={errRef}
               className={errMsg ? "errmsg" : "offscreen"}
@@ -123,7 +133,7 @@ function Signup() {
             </p>
             <h1>Sign Up</h1>
             <form>
-              <label htmlFor="username">
+              {/* <label htmlFor="username">
                 Username:
                 <FontAwesomeIcon
                   icon={faCheck}
@@ -160,7 +170,7 @@ function Signup() {
                 Must begin with a letter.
                 <br />
                 Letters, numbers, underscores, hyphens allowed.
-              </p>
+              </p> */}
 
               <label htmlFor="email">
                 Email:
@@ -276,7 +286,8 @@ function Signup() {
 
               <button
                 onClick={handleSubmit}
-                disabled={!validName || !validPwd || !validMatch ? true : false}
+                disabled={!validPwd || !validMatch ? true : false}
+                className={`bg-white text-black mt-7 h-8`}
               >
                 Sign Up
               </button>

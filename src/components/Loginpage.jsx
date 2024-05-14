@@ -62,7 +62,7 @@ function Loginpage() {
         try {
           const response = await res.json();
 
-          console.log("yoohoo", response);
+         
           if (res.ok) {
             const cookie = Cookies.get("seddfcfcfcfcfcgygytrerrer");
             console.log(cookie);
@@ -75,7 +75,7 @@ function Loginpage() {
             setFailedLogin(response);
           }
         } catch (error) {
-          console.log(error);
+         
         }
       });
     } catch (error) {
