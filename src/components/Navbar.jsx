@@ -21,6 +21,7 @@ function Navbar(props) {
   const [isVisible, setIsVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707);
   const [isSearchClicked, setIsSearchClicked] = useState(false)
+  const [isMobileSearchActive, setIsMobileSearchActive] = useState(false)
   const { isDark, setIsDark } = useGlobal();
   const { useOutsideClickDetector } = useUtilities();
   
@@ -107,9 +108,6 @@ function Navbar(props) {
     return () => window.removeEventListener("resize", updateMedia);
   });
 
-  // useEffect(() => {
-  //   console.log("searchQuery", searchQuery);
-  // }, [searchQuery]);
 
   return (
     <div
@@ -117,6 +115,37 @@ function Navbar(props) {
         isDark ? "bg-dim" : ""
       } h-[64px] w-full mb-0 border-b-[1px]`}
     >
+      <div className={`absolute ${isMobileSearchActive? 'visible': 'invisible'} flex flex-row bg-gray-100 mt-[5px] ml-[5px] w-[270px] rounded-lg h-[50px]`}>
+       <input 
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onFocus={() => {
+          HandleNavigate("/searchpage");
+          setSearch(true);
+        }}
+        value={searchQuery}
+        className="bg-gray-100 p-1 h-full text-xs w-[240px] rounded-lg outline-none"
+        placeholder="Search" />
+       <svg
+              onClick={() => {
+                HandleNavigate("/");
+                setIsMobileSearchActive(false);
+              
+              }}
+              
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-[24px] h-[24px] mt-[12px] ml-[10px] mr-[10px] cursor-pointer"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+      </div>
         <div
           onClick={props.HandleClick}
           className={`flex flex-row items-center justify-center ml-[18px] mt-[10px] h-[40px] w-[40px]  mr-[10px] cursor-pointer rounded-full hover:bg-gray-200`}
@@ -230,9 +259,17 @@ function Navbar(props) {
             </svg>
           )}
         </div>}
-        <div className="flex items-center ml-[50px] m:ml-[80px] mx:ml-[150px] sx:ml-[220px] ms:ml-[280px]">
+        <div className={`flex items-center ${isDesktop ? '': 'ml-[100px]'} ml-[50px] m:ml-[80px] mx:ml-[150px] sx:ml-[220px] ms:ml-[280px]`}>
   
-          <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`h-[22px] ${isDark? 'text-gray-400' : ''} mt-[2px] mr-[15px] cursor-pointer`}>
+          <svg onClick={()=>{
+            setIsMobileSearchActive(true)
+            HandleNavigate("/searchpage");
+            setSearch(true);
+            props.collapse()
+          }} 
+           xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+             fill="currentColor" className={`h-[22px] ${isDark? 'text-gray-400' : ''} mt-[2px] mr-[15px] cursor-pointer`}>
            <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
           </svg>
 
@@ -252,7 +289,7 @@ function Navbar(props) {
 
         </div>
 
-        <div className="flex flex-row items-center justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200">
+        <div className={`flex flex-row items-center ${isDesktop ? 'block': 'hidden'} justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200`}>
           <svg
             onClick={props.portraitView}
             xmlns="http://www.w3.org/2000/svg"

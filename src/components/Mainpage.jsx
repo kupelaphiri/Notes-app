@@ -31,6 +31,8 @@ function Mainpage() {
   const [isDeleted, setIsDeleted] = useState(false);
   const [noteID, setNoteID] = useState(null);
   const [isUndone, setIsUndone] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707);
+
 
   const InputRef = useRef(null);
   const ModalRef = useRef(null);
@@ -116,9 +118,9 @@ function Mainpage() {
       const respond = await res.json();
       console.log("Delete", respond);
       setBackendPinnedData((prev) => {
-        const newArr = [...prev];
-        newArr.shift();
-        return newArr;
+        // const newArr = [...prev];
+        // newArr.shift();
+        // return newArr;
       });
     });
     const currentNotes = [...backendPinnedData];
@@ -263,16 +265,16 @@ function Mainpage() {
           ></l-ring>
         ) : (
           <div className={`bg-inherit`}>
-            <div className="flex justify-center w-full">
+            <div className={`flex justify-center  w-full`}>
               <div
                 ref={InputRef}
                 className={`flex flex-col m-8  ${
                   isActive ? "min-h-[136px]" : "h-[46px]"
-                } bg-inherit w-full min-w-[400px] max-w-[598px] border rounded-lg pl-5 shadow-lg`}
+                } bg-inherit w-full min-w-[300px] max-w-[598px] border rounded-lg pl-5 shadow-lg`}
               >
                 <input
                   onChange={(e) => setTitle(e.target.value)}
-                  className={`w-[400px] bg-inherit h-[42px] mb-2 mt-2 ${
+                  className={`w-full bg-inherit h-[42px] mb-2 mt-2 ${
                     isActive ? "block" : "hidden"
                   } ${
                     isDark
@@ -294,16 +296,18 @@ function Mainpage() {
                   placeholder="Take a note..."
                 ></TextareaAutosize>
 
+              <div className="flex flex-row-reverse">
                 <button
                   onClick={handleSubmit}
                   className={`${isActive ? "block" : "hidden"} w-[80px] ${
                     isDark
                       ? "text-gray-300 hover:bg-gray-800"
                       : "hover:bg-gray-100"
-                  } p-[10px] ml-[480px] hover:bg-gray-100`}
+                  } p-[10px] hover:bg-gray-100`}
                 >
-                  Ok
+                  OK
                 </button>
+                </div>
               </div>
             </div>
 
@@ -438,7 +442,7 @@ function Mainpage() {
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col w-[400px] max-w-[500px] text-ellipsis sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                              className={`flex flex-col ${isDesktop ? 'w-[400px]' : 'w-[300px]'}  max-w-[500px] text-ellipsis sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                                 isOn ? "w-[597px]" : ""
                               }`}
                             >
@@ -509,7 +513,7 @@ function Mainpage() {
 
                 {open === true && (
                   <Modal ref={ModalRef} isOpen={open}>
-                    <div className="flex flex-col w-full  h-full">
+                    <div className="flex flex-row-reverse w-full h-full">
                       <svg
                         onClick={() => {
                           setOpen(false);
@@ -519,7 +523,7 @@ function Mainpage() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6 ml-[550px] cursor-pointer"
+                        class="w-6 h-6 cursor-pointer"
                       >
                         <path
                           stroke-linecap="round"
@@ -547,10 +551,11 @@ function Mainpage() {
                         </TextareaAutosize>
                       </div>
                     </div>
-                    <div className="flex flex-row  w-full">
+                    <div className="flex flex-row justify-between w-full">
+                      <div className="flex flex-row">
                       <svg
                         onClick={() => deleteNote(modalData._id)}
-                        className=" hidden-content w-[20px] ml-[2px] cursor-pointer"
+                        className="hidden-content w-[20px] ml-[2px] cursor-pointer"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
@@ -575,9 +580,10 @@ function Mainpage() {
                           clip-rule="evenodd"
                         />
                       </svg>
+                      </div>
                       <button
                         onClick={editNote}
-                        className="ml-[500px] p-1 hover:bg-gray-100"
+                        className="p-1 text-sm hover:bg-gray-100"
                       >
                         Edit
                       </button>
