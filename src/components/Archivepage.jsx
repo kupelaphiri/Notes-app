@@ -395,7 +395,7 @@ function Archivepage() {
               )}
               {isModalOpen && (
                 <Modal isOpen={isModalOpen}>
-                  <div className=" flex flex-col w-full h-full">
+                  <div className=" flex flex-row-reverse w-full h-full">
                     <svg
                       onClick={() => {
                         setIsModalOpen(false);
@@ -407,7 +407,7 @@ function Archivepage() {
                       stroke="currentColor"
                       className={`w-6 h-6 ${
                         isDark ? "text-gray-400" : ""
-                      } ml-[570px] cursor-pointer`}
+                      } cursor-pointer`}
                     >
                       <path
                         stroke-linecap="round"
@@ -436,7 +436,8 @@ function Archivepage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-row w-full">
+                  <div className="flex flex-row justify-between w-full">
+                    <div className="flex flex-row">
                     <svg
                       onClick={() => unarchive(modalData._id)}
                       xmlns="http://www.w3.org/2000/svg"
@@ -467,9 +468,10 @@ function Archivepage() {
                         clip-rule="evenodd"
                       />
                     </svg>
+                    </div>
                     <button
                       onClick={editNote}
-                      className={`ml-[500px] ${
+                      className={` ${
                         isDark ? "text-white" : ""
                       } p-1 hover:bg-gray-100`}
                     >

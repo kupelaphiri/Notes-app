@@ -15,6 +15,10 @@ function RootLayout() {
     setIsOpen((current) => !current);
   };
 
+  const collapse = () => {
+    setIsOpen(false)
+  }
+
   // const getNotes = async () => {
   //   setIsLoading(true);
   //   try {
@@ -57,7 +61,7 @@ function RootLayout() {
 
   return (
     <div className="h-full w-full text-black">
-      <Navbar HandleClick={HandleClick} portraitView={portraitView} refresh={refresh}  />
+      <Navbar HandleClick={HandleClick} portraitView={portraitView} refresh={refresh} collapse={collapse}  />
       <div className="flex flex-row flex-1 w-full h-full">
         <div
           className={`flex flex-col w-[60px] shrink ${

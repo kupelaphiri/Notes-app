@@ -24,7 +24,7 @@ function Modal({ isOpen, onClose, children, ref }) {
             }}
         >
             <div
-            className={`${isDark ? 'bg-dim': 'bg-white'} flex flex-col w-full max-w-[640px] m-auto p-[2%] rounded-md overflow-y-hidden max-h-[425px]`}
+            className={`${isDark ? 'bg-dim': 'bg-white'} flex flex-col w-full max-w-[640px] m-2 p-[2%] rounded-md overflow-y-hidden max-h-[425px]`}
                 // style={{
                 //     background: "white",
                 //     height: 150,
