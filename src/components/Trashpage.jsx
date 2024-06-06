@@ -189,7 +189,7 @@ function Trashpage() {
                     return (
                       <div
                         key={note.id}
-                        className={`w-[280px] flex flex-col group min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                        className={`w-[280px] flex flex-col group hover:shadow-lg min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                           isOn ? "w-[597px]" : ""
                         }`}
                       >
@@ -248,11 +248,8 @@ function Trashpage() {
                 </div>
               ) : (
                 <div
-                  className={`flex w-full overflow-visible pb-[20px] justify-center pl-[15px] ${
-                    isOn
-                      ? "flex-row flex-nowrap items-center"
-                      : "flex-row flex-wrap"
-                  } flex-1`}
+                 className="w-full"
+              
                 >
                   <Masonry
                     breakpointCols={breakpointColumnsObj}
@@ -263,7 +260,7 @@ function Trashpage() {
                       return (
                         <div
                           key={note.id}
-                          className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 text-ellipsis max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                          className={`flex flex-col group cursor-pointer hover:shadow-lg flex-1 min-h-24 text-ellipsis max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
                             isOn ? "w-[597px]" : ""
                           }`}
                         >
@@ -274,7 +271,7 @@ function Trashpage() {
                               setModalBody(note);
                               setOpen(true);
                             }}
-                            className="w-full h-full pr-3 text-ellipsis overflow-hidden pl-3 pb-8"
+                            className="w-full h-full mb-6 pr-3 text-ellipsis overflow-hidden pl-3 pb-8"
                           >
                             <h2
                               className={`text-xs ${
@@ -330,7 +327,7 @@ function Trashpage() {
           )}
           {open && (
             <Modal isOpen={open}>
-              <div className=" flex flex-col w-full h-full">
+              <div className=" flex flex-row-reverse w-full h-full">
                 <svg
                   onClick={() => {
                     setOpen(false);
@@ -340,7 +337,7 @@ function Trashpage() {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-6 h-6 ml-[570px] cursor-pointer"
+                  class="w-6 h-6  cursor-pointer"
                 >
                   <path
                     stroke-linecap="round"

@@ -104,6 +104,8 @@ function Mainpage() {
     728: 1,
   };
 
+  
+
   //moves the note to trash
   const deleteNote = (id) => {
     setNoteID(id);
@@ -248,8 +250,9 @@ function Mainpage() {
 
   return (
     <>
+    
       <div
-        className={`flex h-screen bg-inherit overflow-x-hidden shrink -z-1 flex-col w-full min-h-full ${
+        className={`flex h-screen bg-inherit overflow-x-hidden shrink z-0 flex-col w-full min-h-full ${
           isLoading ? "justify-center items-center" : ""
         } ${
           backendPinnedData == null ? "overflow-y-hidden" : ""
@@ -365,12 +368,12 @@ function Mainpage() {
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 sm:max-h-[452px]  overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                              className={`flex flex-col w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 sm:max-h-[452px]  overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
                                 isOn ? "sm:w-[597px] w-[400px]" : ""
                               }`}
                             >
                               <div
-                                className="w-full h-full pr-3 text-ellipsis pl-3 pb-8"
+                                className="w-full h-full pr-3 text-ellipsis overflow-hidden mb-6 pl-3 pb-8"
                                 onClick={() => {
                                   setModalData(note);
                                   setModalTitle(note);
@@ -432,22 +435,24 @@ function Mainpage() {
                       })}
                     </div>
                   ) : (
+                    <div className="w-full">
                     <Masonry
                       breakpointCols={breakpointColumnsObj}
                       className={`my-masonry-grid pl-10`}
                       columnClassName="ny-masonry-grid-column"
                     >
+                   
                       {backendPinnedData.map((note) => {
                         return (
                           <>
                             <div
                               key={note.id}
-                              className={`flex flex-col ${isDesktop ? 'w-[400px]' : 'w-[300px]'}  max-w-[500px] text-ellipsis sm:w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                              className={`flex flex-col text-ellipsis  group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                                 isOn ? "w-[597px]" : ""
                               }`}
                             >
                               <div
-                                className="w-full max-w-[400px] overflow-hidden h-full pr-3 text-ellipsis pl-3 pb-8"
+                                className="w-full max-w-[400px] overflow-hidden h-full pr-3 text-ellipsis pl-3 mb-6 pb-10"
                                 onClick={() => {
                                   setModalData(note);
                                   setModalTitle(note);
@@ -507,7 +512,9 @@ function Mainpage() {
                           </>
                         );
                       })}
-                    </Masonry>
+                     
+                   </Masonry>
+                   </div>
                   )}
                 </div>
 

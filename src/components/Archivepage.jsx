@@ -257,7 +257,7 @@ function Archivepage() {
                     return (
                       <div
                         key={note.id}
-                        className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                        className={`flex flex-col w-[240px] group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
                           isOn ? "w-[597px]" : ""
                         }`}
                       >
@@ -312,11 +312,8 @@ function Archivepage() {
                 </div>
               ) : (
                 <div
-                  className={`flex w-full items-stretch overflow-visible pb-[20px] justify-center pl-[15px] ${
-                    isOn
-                      ? "flex-col flex-nowrap items-center"
-                      : "flex-row flex-wrap"
-                  }  flex-1`}
+                 className="w-full"
+                
                 >
                   <Masonry
                     breakpointCols={breakpointColumnsObj}
@@ -327,12 +324,12 @@ function Archivepage() {
                       return (
                         <div
                           key={note.id}
-                          className={`flex flex-col w-[240px] group cursor-pointer flex-1 min-h-24 text-ellipsis max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
+                          className={`flex flex-col group cursor-pointer hover:shadow-lg flex-1 min-h-24 text-ellipsis max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
                             isOn ? "w-[597px]" : ""
                           }`}
                         >
                           <div
-                            className="w-full h-full pr-3 pl-3 overflow-hidden pb-9"
+                            className="w-full h-full pr-3 pl-3 overflow-hidden mb-6 pb-9"
                             onClick={() => {
                               setModalData(note);
                               setModalTitle(note);
@@ -395,7 +392,7 @@ function Archivepage() {
               )}
               {isModalOpen && (
                 <Modal isOpen={isModalOpen}>
-                  <div className=" flex flex-row-reverse w-full h-full">
+                  <div className="flex flex-row-reverse w-full h-full">
                     <svg
                       onClick={() => {
                         setIsModalOpen(false);

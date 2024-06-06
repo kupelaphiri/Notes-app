@@ -20,6 +20,7 @@ function Navbar(props) {
   const { setSearchResults } = useGlobal();
   const [isVisible, setIsVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707);
+  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 794)
   const [isSearchClicked, setIsSearchClicked] = useState(false)
   const [isMobileSearchActive, setIsMobileSearchActive] = useState(false)
   const { isDark, setIsDark } = useGlobal();
@@ -41,6 +42,10 @@ function Navbar(props) {
   const updateMedia = () => {
     setIsDesktop(window.innerWidth > 707);
   };
+
+  const updateIcon = () => {
+    setIsWideScreen(window.innerWidth > 794)
+  }
 
   const settings = () => {
     setIsVisible(true);
@@ -106,6 +111,11 @@ function Navbar(props) {
   useEffect(() => {
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
+  });
+
+  useEffect(() => {
+    window.addEventListener("resize", updateIcon);
+    return () => window.removeEventListener("resize", updateIcon);
   });
 
 
@@ -259,7 +269,7 @@ function Navbar(props) {
             </svg>
           )}
         </div>}
-        <div className={`flex items-center ${isDesktop ? '': 'ml-[100px]'} ml-[50px] m:ml-[80px] mx:ml-[150px] sx:ml-[220px] ms:ml-[280px]`}>
+        <div className={`flex items-center ${isDesktop ? '': 'ml-[100px]'}  ml-[50px] m:ml-[80px] mx:ml-[150px] sx:ml-[220px] ms:ml-[280px]`}>
   
           <svg onClick={()=>{
             setIsMobileSearchActive(true)
@@ -278,7 +288,7 @@ function Navbar(props) {
       
         </>
       )}
-      <div className="flex flex-row pt-[5px] justify-between items-center bg-inherit w-[150px] h-[40px] s:ml-0 lg:ml-[900px] mt-[10px]">
+      <div className={`flex flex-row pt-[5px] ${isWideScreen ? 'justify-between': ''}  items-center bg-inherit w-[150px] h-[40px] s:ml-0 lg:ml-[900px] mt-[10px]`}>
         <div
           className={`flex flex-row items-center justify-center h-[40px] w-[40px] ml-0 sm:ml-[15px] cursor-pointer rounded-full hover:bg-gray-200`}
         >
@@ -289,7 +299,7 @@ function Navbar(props) {
 
         </div>
 
-        <div className={`flex flex-row items-center ${isDesktop ? 'block': 'hidden'} justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200`}>
+        <div className={`flex flex-row items-center ${isWideScreen ? 'block': 'hidden'} justify-center h-[40px] w-[40px] ml-[2px] cursor-pointer rounded-full hover:bg-gray-200`}>
           <svg
             onClick={props.portraitView}
             xmlns="http://www.w3.org/2000/svg"
