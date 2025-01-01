@@ -132,7 +132,7 @@ function Trashpage() {
           stroke="5"
           bg-opacity="0"
           speed="2"
-          color="black"
+          color={`${isDark ? 'white' : 'black'}`}
         ></l-ring>
       ) : (
         <div
@@ -164,7 +164,7 @@ function Trashpage() {
             <div className="flex flex-col h-screen w-full overflow-y-auto pb-[100px]">
               <div className="flex justify-center w-full pt-8">
                 <p
-                  className={`text-xs sm:text-base ${
+                  className={`text-xs text-wrap sm:text-nowrap sm:text-base ${
                     isDark ? "text-white" : ""
                   }`}
                 >
@@ -251,83 +251,91 @@ function Trashpage() {
                  className="w-full"
               
                 >
-                  <Masonry
-                    breakpointCols={breakpointColumnsObj}
-                    className={`my-masonry-grid pl-10`}
-                    columnClassName="ny-masonry-grid-column"
-                  >
-                    {deletedNotes.map((note) => {
-                      return (
-                        <div
-                          key={note.id}
-                          className={`flex flex-col group cursor-pointer hover:shadow-lg flex-1 min-h-24 text-ellipsis max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-lg mr-4 ${
-                            isOn ? "w-[597px]" : ""
-                          }`}
-                        >
-                          <div
-                            onClick={() => {
-                              setModalData(note);
-                              setModalTitle(note);
-                              setModalBody(note);
-                              setOpen(true);
-                            }}
-                            className="w-full h-full mb-6 pr-3 text-ellipsis overflow-hidden pl-3 pb-8"
-                          >
-                            <h2
-                              className={`text-xs ${
-                                isDark ? "text-white" : ""
+                   <Masonry
+                      breakpointCols={breakpointColumnsObj}
+                      className={`my-masonry-grid pl-10`}
+                      columnClassName="ny-masonry-grid-column"
+                    >
+                   
+                      {deletedNotes.map((note) => {
+                        return (
+                          <>
+                            <div
+                              key={note.id}
+                              className={`flex flex-col text-ellipsis  group hover:shadow-lg cursor-pointer flex-1 min-h-24 max-h-[452px] overflow-hidden border-[1px] mt-[20px] pt-2 rounded-md mr-4 ${
+                                isOn ? "w-[597px]" : ""
                               }`}
                             >
-                              {note.title}
-                            </h2>
-                            <p
-                              className={`text-xs ${
-                                isDark ? "text-white" : ""
-                              }`}
-                            >
-                              {note.body}
-                            </p>
-                          </div>
-                          <div className="flex flex-row justify-end">
-                            <svg
-                              onClick={() => restoreNote(note._id)}
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className={`invisible group-hover:visible mt-[5px] ${
-                                isDark ? "text-gray-400" : ""
-                              } w-[20px] cursor-pointer`}
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M13.75 7h-3V3.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0L6.2 4.74a.75.75 0 0 0 1.1 1.02l1.95-2.1V7h-3A2.25 2.25 0 0 0 4 9.25v7.5A2.25 2.25 0 0 0 6.25 19h7.5A2.25 2.25 0 0 0 16 16.75v-7.5A2.25 2.25 0 0 0 13.75 7Zm-3 0h-1.5v5.25a.75.75 0 0 0 1.5 0V7Z"
-                                clip-rule="evenodd"
-                              />
-                            </svg>
-                            <svg
-                              onClick={() => permanentDelete(note._id)}
-                              className={`invisible group-hover:visible mt-[7px] ${
-                                isDark ? "text-gray-400" : ""
-                              } mr-1 w-[20px] cursor-pointer`}
-                              viewBox="0 0 48 48"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path d="M0 0h48v48H0V0z" fill="none" />
-                              <path d="M12 38c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4V14H12v24zm4.93-14.24l2.83-2.83L24 25.17l4.24-4.24 2.83 2.83L26.83 28l4.24 4.24-2.83 2.83L24 30.83l-4.24 4.24-2.83-2.83L21.17 28l-4.24-4.24zM31 8l-2-2H19l-2 2h-7v4h28V8z" />
-                              <path d="M0 0h48v48H0z" fill="none" />
-                            </svg>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </Masonry>
+                              <div
+                                className="w-full max-w-[400px] overflow-hidden h-full pr-3 text-ellipsis pl-3 mb-6 pb-10"
+                                onClick={() => {
+                                  setModalData(note);
+                                  setModalTitle(note);
+                                  setModalBody(note);
+                                  setOpen(true);
+                                }}
+                              >
+                                <h2
+                                  className={`text-sm ${
+                                    isDark ? "text-white" : ""
+                                  }`}
+                                >
+                                  {note.title}
+                                </h2>
+                                <p
+                                  className={`text-sm text-ellipsis ${
+                                    isDark ? "text-white" : ""
+                                  } mt-1`}
+                                >
+                                  {note.body}
+                                </p>
+                              </div>
+                              <div className="flex flex-row w-full justify-end pr-1">
+                                <svg
+                                  onClick={() => restoreNote(note._id)}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className={`invisible group-hover:visible ${
+                                    isDark ? "text-gray-400" : ""
+                                  } w-[20px] mt-[2px] cursor-pointer`}
+                                >
+                                  <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
+                                  <path
+                                    fillRule="evenodd"
+                                    d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                                <svg
+                                  onClick={() => permanentDelete(note._id)}
+                                  className={`invisible group-hover:visible ${
+                                    isDark ? "text-gray-400" : ""
+                                  } w-[20px] cursor-pointer`}
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })}
+                     
+                   </Masonry>
                 </div>
               )}
             </div>
           )}
           {open && (
             <Modal isOpen={open}>
-              <div className=" flex flex-row-reverse w-full h-full">
+              <div className=" flex flex-row-reverse z-10 w-full h-full">
                 <svg
                   onClick={() => {
                     setOpen(false);
@@ -337,7 +345,9 @@ function Trashpage() {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-6 h-6  cursor-pointer"
+                  class={`w-6 h-6 ${
+                    isDark ? "text-white" : ""
+                  } cursor-pointer`}
                 >
                   <path
                     stroke-linecap="round"
@@ -346,7 +356,7 @@ function Trashpage() {
                   />
                 </svg>
               </div>
-              <div className="w-full overflow-y-auto">
+              <div className="w-full px-3 overflow-y-auto">
                 <h3
                   className={`outline-none ${
                     isDark ? "text-white" : ""
@@ -365,10 +375,12 @@ function Trashpage() {
                 </div>
               </div>
 
-              <div className="flex flex-row w-full">
+              <div className="flex px-3 mt-3 flex-row w-full">
                 <svg
                   onClick={() => permanentDelete(modalData._id)}
-                  className=" hidden-content w-[20px] ml-[2px] cursor-pointer"
+                  className={` hidden-content w-[20px] ${
+                    isDark ? "text-white" : ""
+                  } ml-[2px] cursor-pointer`}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
@@ -384,7 +396,9 @@ function Trashpage() {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="hidden-content w-[20px] cursor-pointer"
+                  className={`hidden-content ${
+                    isDark ? "text-white" : ""
+                  } w-[20px] cursor-pointer`}
                 >
                   <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
                   <path
@@ -399,12 +413,12 @@ function Trashpage() {
 
           {isDialogueModal && (
             <Modal isOpen={isDialogueModal}>
-              <div className="flex flex-col">
+              <div className="flex p-4 sm:p-0 overflow-hidden flex-col">
                 <div className="mb-[30px]">
                   <p
                     className={`text-xs ${
                       isDark ? "text-white" : ""
-                    } whitespace-nowrap`}
+                    } sm:whitespace-nowrap`}
                   >
                     Empty trash? All notes in Trash will be permanently deleted.
                   </p>
@@ -413,7 +427,7 @@ function Trashpage() {
                   <div className="w-[120px] pr-[2px] justify-center hover:bg-gray-200">
                     <button
                       onClick={deleteAll}
-                      className="text-base text-blue-400"
+                      className="text-sm text-blue-400"
                     >
                       Empty Trash
                     </button>
@@ -421,7 +435,7 @@ function Trashpage() {
                   <div>
                     <button
                       onClick={() => setIsDialogueModal(false)}
-                      className={`text-base ${
+                      className={`text-sm ${
                         isDark ? "text-white" : ""
                       } mr-[40px]`}
                     >

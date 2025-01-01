@@ -75,7 +75,6 @@ function Navbar(props) {
 
       if (res.ok) {
         setAuth(null);
-        console.log("auth", auth);
         window.location.reload();
       }
     } catch (error) {
@@ -125,7 +124,9 @@ function Navbar(props) {
         isDark ? "bg-dim" : ""
       } h-[64px] w-full mb-0 border-b-[1px]`}
     >
-      <div className={`absolute ${isMobileSearchActive? 'visible': 'invisible'} flex flex-row bg-gray-100 mt-[5px] ml-[5px] w-[270px] rounded-lg h-[50px]`}>
+      <div className={`absolute ${isMobileSearchActive? 'visible': 'invisible'} flex flex-row ${
+            isDark ? "bg-light-dim" : "bg-gray-100"
+          } mt-[5px] z-10 ml-[5px] w-[270px] rounded-lg h-[50px]`}>
        <input 
         onChange={(e) => setSearchQuery(e.target.value)}
         onFocus={() => {
@@ -133,7 +134,7 @@ function Navbar(props) {
           setSearch(true);
         }}
         value={searchQuery}
-        className="bg-gray-100 p-1 h-full text-xs w-[240px] rounded-lg outline-none"
+        className="bg-inherit p-1 h-full text-xs w-[240px] outline-none"
         placeholder="Search" />
        <svg
               onClick={() => {
@@ -168,7 +169,7 @@ function Navbar(props) {
           </svg>
 
         </div>
-      <div className="flex mt-[5px] items-center max-w-full pl-[5px] mr-[20px] h-[48px]">
+      <div className={`flex mt-[5px] items-center max-w-full pl-[5px] mr-[20px] h-[48px]`}>
 
         <img src="https://www.gstatic.com/images/branding/product/1x/keep_2020q4_48dp.png" />
 

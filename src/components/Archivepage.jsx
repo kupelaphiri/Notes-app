@@ -213,7 +213,7 @@ function Archivepage() {
           stroke="5"
           bg-opacity="0"
           speed="2"
-          color="black"
+          color={`${isDark ? 'white' : 'black'}`}
         ></l-ring>
       ) : (
         <div
@@ -392,7 +392,7 @@ function Archivepage() {
               )}
               {isModalOpen && (
                 <Modal isOpen={isModalOpen}>
-                  <div className="flex flex-row-reverse w-full h-full">
+                  <div className="flex flex-row-reverse z-10 w-full h-full">
                     <svg
                       onClick={() => {
                         setIsModalOpen(false);
@@ -403,7 +403,7 @@ function Archivepage() {
                       stroke-width="1.5"
                       stroke="currentColor"
                       className={`w-6 h-6 ${
-                        isDark ? "text-gray-400" : ""
+                        isDark ? "text-white" : ""
                       } cursor-pointer`}
                     >
                       <path
@@ -413,7 +413,7 @@ function Archivepage() {
                       />
                     </svg>
                   </div>
-                  <div className="h-full w-full overflow-y-auto">
+                  <div className="h-full w-full p-2 overflow-y-auto">
                     <input
                       value={modalTitle.title}
                       className={`outline-none ${
@@ -441,7 +441,7 @@ function Archivepage() {
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       className={` w-[20px] ${
-                        isDark ? "text-gray-400" : ""
+                        isDark ? "text-white" : ""
                       } cursor-pointer`}
                     >
                       <path
@@ -453,7 +453,7 @@ function Archivepage() {
                     <svg
                       onClick={() => deleteNote(modalData._id)}
                       className={`hidden-content ${
-                        isDark ? "text-gray-400" : ""
+                        isDark ? "text-white" : ""
                       } w-[20px] ml-[2px] cursor-pointer`}
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"

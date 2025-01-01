@@ -49,7 +49,6 @@ function Loginpage() {
     e.preventDefault();
     try {
       const loginDetails = { email: user.trim(), password: pwd.trim() };
-      console.log("details", loginDetails);
       setAuth(loginDetails);
 
       fetch(`${BASE_URL}/auth`, {
@@ -65,7 +64,6 @@ function Loginpage() {
          
           if (res.ok) {
             const cookie = Cookies.get("seddfcfcfcfcfcgygytrerrer");
-            console.log(cookie);
             setUser("");
             setPwd("");
             setLoginMsg(response);

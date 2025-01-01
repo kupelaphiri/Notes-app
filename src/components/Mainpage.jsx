@@ -215,8 +215,6 @@ function Mainpage() {
     (e) => {
       if (e) e.preventDefault();
       const note = { title: title.trim(), body: body.trim() };
-      console.log(note);
-
       setTitle("");
       setBody("");
       fetch(`${BASE_URL}/add-note`, {
@@ -226,16 +224,13 @@ function Mainpage() {
         credentials: "include",
       }).then(async (res) => {
         try {
-          console.log(res);
           const response = await res.json();
 
-          console.log("wababade", response);
           setBackendPinnedData((prev) => {
             const newArr = [...prev];
             newArr.unshift(response);
             return newArr;
           });
-          console.log("new note added");
         } catch (error) {
           console.log(error);
         }
@@ -264,7 +259,7 @@ function Mainpage() {
             stroke="5"
             bg-opacity="0"
             speed="2"
-            color="black"
+            color={`${isDark ? 'white' : 'black'}`}
           ></l-ring>
         ) : (
           <div className={`bg-inherit`}>
@@ -302,13 +297,13 @@ function Mainpage() {
               <div className="flex flex-row-reverse">
                 <button
                   onClick={handleSubmit}
-                  className={`${isActive ? "block" : "hidden"} w-[80px] ${
+                  className={`${isActive ? "block" : "hidden"} mr-3 w-[80px] ${
                     isDark
                       ? "text-gray-300 hover:bg-gray-800"
                       : "hover:bg-gray-100"
-                  } p-[10px] hover:bg-gray-100`}
+                  } p-[10px] text-sm hover:bg-gray-100`}
                 >
-                  OK
+                  Close
                 </button>
                 </div>
               </div>
@@ -520,7 +515,7 @@ function Mainpage() {
 
                 {open === true && (
                   <Modal ref={ModalRef} isOpen={open}>
-                    <div className="flex flex-row-reverse w-full h-full">
+                    <div className="flex flex-row-reverse z-20 w-full h-full">
                       <svg
                         onClick={() => {
                           setOpen(false);
@@ -530,7 +525,9 @@ function Mainpage() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class="w-6 h-6 cursor-pointer"
+                        class={`w-6 h-6 ${
+                          isDark ? "text-white" : ""
+                        } cursor-pointer`}
                       >
                         <path
                           stroke-linecap="round"
@@ -539,7 +536,7 @@ function Mainpage() {
                         />
                       </svg>
                     </div>
-                    <div className="h-full w-full overflow-y-auto">
+                    <div className="h-full p-2 w-full overflow-y-auto">
                       <input
                         value={modalTitle.title}
                         className={`outline-none ${
@@ -562,7 +559,9 @@ function Mainpage() {
                       <div className="flex flex-row">
                       <svg
                         onClick={() => deleteNote(modalData._id)}
-                        className="hidden-content w-[20px] ml-[2px] cursor-pointer"
+                        className={`hidden-content w-[20px] ${
+                          isDark ? "text-white" : ""
+                        } ml-[2px] cursor-pointer`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
@@ -578,7 +577,9 @@ function Mainpage() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="hidden-content w-[20px] cursor-pointer"
+                        className={`hidden-content w-[20px] ${
+                          isDark ? "text-white" : ""
+                        } cursor-pointer`}
                       >
                         <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
                         <path
@@ -590,7 +591,9 @@ function Mainpage() {
                       </div>
                       <button
                         onClick={editNote}
-                        className="p-1 text-sm hover:bg-gray-100"
+                        className={`p-1 text-sm ${
+                          isDark ? "text-white" : ""
+                        } hover:bg-gray-100`}
                       >
                         Edit
                       </button>

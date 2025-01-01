@@ -9,6 +9,7 @@ function RootLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const [isOn, setIsOn] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 707)
+  const {isDark} = useGlobal()
   
 
   const HandleClick = () => {
@@ -49,7 +50,6 @@ function RootLayout() {
 
   const portraitView = () => {
     setIsOn((current) => !current);
-    console.log("functon call");
   };
 
   const refresh = () => {
@@ -64,13 +64,13 @@ function RootLayout() {
       <Navbar HandleClick={HandleClick} portraitView={portraitView} refresh={refresh} collapse={collapse}  />
       <div className="flex flex-row flex-1 w-full h-full">
         <div
-          className={`flex flex-col w-[60px] shrink ${
+          className={`flex fixed sm:static h-full ${isDark ? 'bg-dim' : 'bg-white'} flex-col w-[60px] shrink ${
             isOpen ? "xs:w-[280px] shadow-xl sm:shadow-none" : "pl-[12px]"
           }`}
         >
           <Sidebar isOpen={isOpen} isDesktop={isDesktop} updateMedia={updateMedia} />
         </div>
-        <div className="h-full w-full overflow-y-auto flex-1 shrink-0">
+        <div className="h-full w-full pl-4 overflow-y-auto flex-1 shrink-0">
           <Outlet context={[isOn, setIsOn, isOpen, setIsOpen ]} />
         </div>
       </div>
