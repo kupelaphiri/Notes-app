@@ -24,7 +24,7 @@ function AppRoutes() {
 
   const portraitView = () => {
     setIsOn((current) => !current);
-    console.log("functon call");
+
   };
   return (
     <Routes>

@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react'
 import { useOutletContext } from "react-router-dom";
 import Masonry from "react-masonry-css";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
+import { TextareaAutosize } from "@mui/material";
 import useGlobal from '../hooks/useGlobal';
 import "./Mainpage.css";
 import Modal from "./Modal";
@@ -20,9 +20,8 @@ const editNote = useCallback(
   (e) => {
     e.preventDefault();
     const noteid = modalData._id;
-    console.log("noteid", noteid);
     const { title, body } = { title: modalTitle, body: modalBody };
-    console.log("note", title, body);
+   
 
     fetch(`${BASE_URL}/edit-note`, {
       method: "PUT",

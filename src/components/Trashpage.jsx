@@ -8,6 +8,10 @@ import { ring } from "ldrs";
 import useGlobal from "../hooks/useGlobal";
 import Modal from "./Modal";
 import { BASE_URL } from "../constants";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
+
 
 ring.register();
 
@@ -62,7 +66,6 @@ function Trashpage() {
   };
 
   const restoreNote = async (id) => {
-    console.log("id", id);
     try {
       await fetch(`${BASE_URL}/restore-note`, {
         method: "POST",
@@ -82,7 +85,6 @@ function Trashpage() {
   };
 
   const permanentDelete = (id) => {
-    console.log("id", id);
     fetch(`${BASE_URL}/permanent-delete-notes`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
@@ -143,20 +145,7 @@ function Trashpage() {
           {deletedNotes == null ? (
             <>
               <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-[100px] text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                  />
-                </svg>
+             <DeleteOutlineOutlinedIcon sx={{ fontSize: 100, color: 'gray' }} />
               </div>
               <p className="text-gray-600 mt-[20px]">No notes in Trash</p>
             </>
@@ -229,18 +218,11 @@ function Trashpage() {
                               clip-rule="evenodd"
                             />
                           </svg>
-                          <svg
-                            onClick={() => permanentDelete(note._id)}
-                            className={`invisible group-hover:visible mt-[7px] ${
+                          <div onClick={() => permanentDelete(note._id)} className={`invisible group-hover:visible mt-[7px] ${
                               isDark ? "text-gray-400" : ""
-                            } mr-1 w-[20px] cursor-pointer`}
-                            viewBox="0 0 48 48"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M0 0h48v48H0V0z" fill="none" />
-                            <path d="M12 38c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4V14H12v24zm4.93-14.24l2.83-2.83L24 25.17l4.24-4.24 2.83 2.83L26.83 28l4.24 4.24-2.83 2.83L24 30.83l-4.24 4.24-2.83-2.83L21.17 28l-4.24-4.24zM31 8l-2-2H19l-2 2h-7v4h28V8z" />
-                            <path d="M0 0h48v48H0z" fill="none" />
-                          </svg>
+                            }`}>
+                            <DeleteForeverIcon sx={{fontSize: 20}}/>
+                          </div>
                         </div>
                       </div>
                     );
@@ -291,37 +273,19 @@ function Trashpage() {
                                 </p>
                               </div>
                               <div className="flex flex-row w-full justify-end pr-1">
-                                <svg
+                                <div 
                                   onClick={() => restoreNote(note._id)}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className={`invisible group-hover:visible ${
+                                  className={`invisible group-hover:visible mt-[7px] ${
                                     isDark ? "text-gray-400" : ""
-                                  } w-[20px] mt-[2px] cursor-pointer`}
+                                  }`}
                                 >
-                                  <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                                  <path
-                                    fillRule="evenodd"
-                                    d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                                <svg
-                                  onClick={() => permanentDelete(note._id)}
-                                  className={`invisible group-hover:visible ${
-                                    isDark ? "text-gray-400" : ""
-                                  } w-[20px] cursor-pointer`}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
+                                  <RestoreFromTrashIcon sx={{fontSize: 20}}/>
+                                </div>
+                                <div onClick={() => permanentDelete(note._id)} className={`invisible group-hover:visible mt-[7px] ${
+                              isDark ? "text-gray-400" : ""
+                            }`}>
+                            <DeleteForeverIcon sx={{fontSize: 20}}/>
+                          </div>
                               </div>
                             </div>
                           </>
@@ -335,7 +299,7 @@ function Trashpage() {
           )}
           {open && (
             <Modal isOpen={open}>
-              <div className=" flex flex-row-reverse z-10 w-full h-full">
+              <div className="flex flex-row-reverse z-10 w-full h-full">
                 <svg
                   onClick={() => {
                     setOpen(false);
@@ -345,7 +309,7 @@ function Trashpage() {
                   viewBox="0 0 24 24"
                   stroke-width="1.5"
                   stroke="currentColor"
-                  class={`w-6 h-6 ${
+                  class={`w-4 h-4 ${
                     isDark ? "text-white" : ""
                   } cursor-pointer`}
                 >
@@ -375,38 +339,20 @@ function Trashpage() {
                 </div>
               </div>
 
-              <div className="flex px-3 mt-3 flex-row w-full">
-                <svg
-                  onClick={() => permanentDelete(modalData._id)}
-                  className={` hidden-content w-[20px] ${
-                    isDark ? "text-white" : ""
-                  } ml-[2px] cursor-pointer`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <svg
-                  onClick={() => restoreNote(modalData._id)}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className={`hidden-content ${
-                    isDark ? "text-white" : ""
-                  } w-[20px] cursor-pointer`}
-                >
-                  <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                  <path
-                    fillRule="evenodd"
-                    d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
+              <div className="flex mt-3 flex-row w-full">
+              <div 
+                                  onClick={() => restoreNote(modalData._id)}
+                                  className={`${
+                                    isDark ? "text-gray-400" : ""
+                                  } ml-2`}
+                                >
+                                  <RestoreFromTrashIcon sx={{fontSize: 20}}/>
+                                </div>
+                                <div onClick={() => permanentDelete(modalData._id)} className={`${
+                              isDark ? "text-gray-400" : ""
+                            }mr-2`}>
+                            <DeleteForeverIcon sx={{fontSize: 20}}/>
+                          </div>
               </div>
             </Modal>
           )}

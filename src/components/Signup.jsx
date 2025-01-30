@@ -76,8 +76,7 @@ function Signup() {
       email: email.trim(),
       password: pwd.trim(),
     };
-    setSuccess(true);
-    console.log(userDetails);
+    setSuccess(true)
 
     try {
       fetch(`${BASE_URL}/add-user`, {
@@ -87,14 +86,10 @@ function Signup() {
       body: JSON.stringify(userDetails),
     }).then(async (res) => {
       const response = await res.json();
-      console.log("wababade", response);
       if (res.ok) {
         setAuth(response)
         navigate(from, { replace: true });
-        console.log("new user added");
-      } else {
-        console.log('error');
-      }
+      } 
      
     });
     } catch (error) {

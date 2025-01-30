@@ -5,12 +5,16 @@ import { useOutletContext } from "react-router-dom";
 import Modal from "./Modal";
 import Masonry from "react-masonry-css";
 import "./Mainpage.css";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
+import { TextareaAutosize } from "@mui/material";
 import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
 import "ldrs/ring";
 import { ring } from "ldrs";
 import useGlobal from "../hooks/useGlobal";
 import { BASE_URL } from "../constants";
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import ArchiveIcon from '@mui/icons-material/Archive';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 ring.register();
 
@@ -118,7 +122,6 @@ function Mainpage() {
       }),
     }).then(async (res) => {
       const respond = await res.json();
-      console.log("Delete", respond);
       setBackendPinnedData((prev) => {
         // const newArr = [...prev];
         // newArr.shift();
@@ -184,9 +187,8 @@ function Mainpage() {
     (e) => {
       e.preventDefault();
       const noteid = modalData._id;
-      console.log("noteid", noteid);
       const { title, body } = { title: modalTitle, body: modalBody };
-      console.log("note", title, body);
+     
 
       fetch(`${BASE_URL}/edit-note`, {
         method: "PUT",
@@ -198,7 +200,6 @@ function Mainpage() {
           body,
         }),
       }).then(async (res) => {
-        console.log(res);
         if (res.ok) {
           setOpen(false);
           getNotes();
@@ -217,24 +218,28 @@ function Mainpage() {
       const note = { title: title.trim(), body: body.trim() };
       setTitle("");
       setBody("");
-      fetch(`${BASE_URL}/add-note`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(note),
-        credentials: "include",
-      }).then(async (res) => {
-        try {
-          const response = await res.json();
-
-          setBackendPinnedData((prev) => {
-            const newArr = [...prev];
-            newArr.unshift(response);
-            return newArr;
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      setIsActive(false)
+      if (title == "" && body == "") {
+        return
+      } else {
+        fetch(`${BASE_URL}/add-note`, {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(note),
+          credentials: "include",
+        }).then(async (res) => {
+          try {
+            const response = await res.json();
+  
+            setBackendPinnedData((prev) => {
+              const safePrev = Array.isArray(prev) ? prev : [];
+              return [response, ...safePrev];
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      }
     },
     [title, body]
   );
@@ -318,20 +323,7 @@ function Mainpage() {
                       : ""
                   } overflow-y-auto pb-[100px] flex-1 shrink-0`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className=" w-[100px] text-gray-300"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
-                    />
-                  </svg>
+                  <LightbulbOutlinedIcon sx={{ fontSize: 100, color: 'gray' }}/>
                   <p className="text-gray-600 mt-[20px]">
                     Notes you add appear here
                   </p>
@@ -392,37 +384,16 @@ function Mainpage() {
                                 </p>
                               </div>
                               <div className="flex flex-row w-full justify-end pr-1">
-                                <svg
-                                  onClick={() => archiveNote(note._id)}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className={`invisible group-hover:visible ${
+                              <div onClick={() => archiveNote(note._id)} className={`invisible group-hover:visible ${
                                     isDark ? "text-gray-400" : ""
-                                  } w-[20px] mt-[2px] cursor-pointer`}
-                                >
-                                  <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                                  <path
-                                    fillRule="evenodd"
-                                    d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                                <svg
-                                  onClick={() => deleteNote(note._id)}
-                                  className={`invisible group-hover:visible ${
+                                  } cursor-pointer`}>
+                                <ArchiveIcon sx={{fontSize: 20}} />
+                                </div>
+                                <div onClick={() => deleteNote(note._id)} className={`invisible group-hover:visible ${
                                     isDark ? "text-gray-400" : ""
-                                  } w-[20px] cursor-pointer`}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
+                                  } cursor-pointer`}>
+                                 <DeleteIcon sx={{fontSize: 20}}/>
+                                </div>
                               </div>
                             </div>
                           </>
@@ -471,37 +442,16 @@ function Mainpage() {
                                 </p>
                               </div>
                               <div className="flex flex-row w-full justify-end pr-1">
-                                <svg
-                                  onClick={() => archiveNote(note._id)}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className={`invisible group-hover:visible ${
+                              <div onClick={() => archiveNote(note._id)} className={`invisible group-hover:visible ${
                                     isDark ? "text-gray-400" : ""
-                                  } w-[20px] mt-[2px] cursor-pointer`}
-                                >
-                                  <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                                  <path
-                                    fillRule="evenodd"
-                                    d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
-                                <svg
-                                  onClick={() => deleteNote(note._id)}
-                                  className={`invisible group-hover:visible ${
+                                  } cursor-pointer`}>
+                                <ArchiveIcon sx={{fontSize: 20}} />
+                                </div>
+                                <div onClick={() => deleteNote(note._id)} className={`invisible group-hover:visible ${
                                     isDark ? "text-gray-400" : ""
-                                  } w-[20px] cursor-pointer`}
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                    clip-rule="evenodd"
-                                  />
-                                </svg>
+                                  } cursor-pointer`}>
+                                 <DeleteIcon sx={{fontSize: 20}}/>
+                                </div>
                               </div>
                             </div>
                           </>
@@ -525,8 +475,8 @@ function Mainpage() {
                         viewBox="0 0 24 24"
                         stroke-width="1.5"
                         stroke="currentColor"
-                        class={`w-6 h-6 ${
-                          isDark ? "text-white" : ""
+                        class={`w-4 h-4 ${
+                          isDark ? "text-gray-400" : ""
                         } cursor-pointer`}
                       >
                         <path
@@ -556,43 +506,22 @@ function Mainpage() {
                       </div>
                     </div>
                     <div className="flex flex-row justify-between w-full">
-                      <div className="flex flex-row">
-                      <svg
-                        onClick={() => deleteNote(modalData._id)}
-                        className={`hidden-content w-[20px] ${
-                          isDark ? "text-white" : ""
-                        } ml-[2px] cursor-pointer`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                      <svg
-                        onClick={() => archiveNote(modalData._id)}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className={`hidden-content w-[20px] ${
-                          isDark ? "text-white" : ""
-                        } cursor-pointer`}
-                      >
-                        <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375Z" />
-                        <path
-                          fillRule="evenodd"
-                          d="m3.087 9 .54 9.176A3 3 0 0 0 6.62 21h10.757a3 3 0 0 0 2.995-2.824L20.913 9H3.087ZM12 10.5a.75.75 0 0 1 .75.75v4.94l1.72-1.72a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l1.72 1.72v-4.94a.75.75 0 0 1 .75-.75Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
+                      <div className="flex ml-1 flex-row">
+                      <div onClick={() => archiveNote(modalData._id)} className={` ${
+                                    isDark ? "text-gray-400" : ""
+                                  } cursor-pointer`}>
+                                <ArchiveIcon sx={{fontSize: 20}} />
+                                </div>
+                                <div onClick={() => deleteNote(modalData._id)} className={` ${
+                                    isDark ? "text-gray-400" : ""
+                                  } cursor-pointer`}>
+                                 <DeleteIcon sx={{fontSize: 20}}/>
+                                </div>
                       </div>
                       <button
                         onClick={editNote}
                         className={`p-1 text-sm ${
-                          isDark ? "text-white" : ""
+                          isDark ? "text-gray-400" : ""
                         } hover:bg-gray-100`}
                       >
                         Edit

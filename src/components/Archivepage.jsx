@@ -3,13 +3,19 @@ import { useOutletContext } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import "./Mainpage.css";
 import { usePageVisibility } from "../hooks/usePageVisibility";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
+import { TextareaAutosize } from "@mui/material";
 import useGlobal from "../hooks/useGlobal";
 import { removeObjectWithId } from "../reusables/RemoveObjectWithId";
 import "ldrs/ring";
 import { ring } from "ldrs";
 import Modal from "./Modal";
 import { BASE_URL } from "../constants";
+import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+
+
 
 ring.register();
 
@@ -53,7 +59,7 @@ function Archivepage() {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+    
       setIsLoading(false);
     }
   };
@@ -106,13 +112,12 @@ function Archivepage() {
       });
       const currentNotes = [...archivedNotes];
       const result = removeObjectWithId(currentNotes, id);
-      console.log("results", result, currentNotes);
       setArchivedNotes(result);
       refreshNotes();
       setIsVisible(true);
       setIsModalOpen(false);
     } catch (error) {
-      console.log("error", error);
+     
     }
   };
 
@@ -159,9 +164,7 @@ function Archivepage() {
     (e) => {
       e.preventDefault();
       const noteid = modalData._id;
-      console.log("noteid", noteid);
       const { title, body } = { title: modalTitle, body: modalBody };
-      console.log("note", title, body);
 
       fetch(`${BASE_URL}/edit-note`, {
         method: "PUT",
@@ -173,7 +176,6 @@ function Archivepage() {
           body,
         }),
       }).then(async (res) => {
-        console.log(res);
         if (res.ok) {
           setIsModalOpen(false);
           getNotes();
@@ -224,20 +226,7 @@ function Archivepage() {
           {archivedNotes == null ? (
             <>
               <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-[100px] text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0-3-3m3 3 3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
-                  />
-                </svg>
+                <ArchiveOutlinedIcon sx={{ fontSize: 100, color: 'gray' }} />
               </div>
               <p className="text-gray-600 mt-[20px]">
                 Your archived notes appear here
@@ -282,29 +271,16 @@ function Archivepage() {
                           </p>
                         </div>
                         <div className="flex flex-row justify-end pr-1 h-full w-full">
-                          <svg
-                            onClick={() => unarchive(note._id)}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                            className="invisible group-hover:visible w-[20px] cursor-pointer"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M13.75 7h-3V3.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0L6.2 4.74a.75.75 0 0 0 1.1 1.02l1.95-2.1V7h-3A2.25 2.25 0 0 0 4 9.25v7.5A2.25 2.25 0 0 0 6.25 19h7.5A2.25 2.25 0 0 0 16 16.75v-7.5A2.25 2.25 0 0 0 13.75 7Zm-3 0h-1.5v5.25a.75.75 0 0 0 1.5 0V7Z"
-                              clip-rule="evenodd"
-                            />
-                          </svg>
-                          <svg
-                            onClick={() => permanentDelete(note._id)}
-                            className="invisible group-hover:visible w-[20px] cursor-pointer"
-                            viewBox="0 0 48 48"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M0 0h48v48H0V0z" fill="none" />
-                            <path d="M12 38c0 2.2 1.8 4 4 4h16c2.2 0 4-1.8 4-4V14H12v24zm4.93-14.24l2.83-2.83L24 25.17l4.24-4.24 2.83 2.83L26.83 28l4.24 4.24-2.83 2.83L24 30.83l-4.24 4.24-2.83-2.83L21.17 28l-4.24-4.24zM31 8l-2-2H19l-2 2h-7v4h28V8z" />
-                            <path d="M0 0h48v48H0z" fill="none" />
-                          </svg>
+                          <div className={`invisible group-hover:visible  cursor-pointer ${
+                                    isDark ? "text-gray-400" : ""
+                                  }`}>
+                            <UnarchiveIcon sx={{fontSize: 20}}/>
+                          </div>
+                          <div onClick={() => deleteNote(note._id)} className={`invisible group-hover:visible ${
+                              isDark ? "text-gray-400" : ""
+                            }`}>
+                            <DeleteIcon sx={{fontSize: 20}}/>
+                          </div>
                         </div>
                       </div>
                     );
@@ -353,36 +329,16 @@ function Archivepage() {
                             </p>
                           </div>
                           <div className="flex flex-row justify-end pr-1 h-full w-full">
-                            <svg
-                              onClick={() => unarchive(note._id)}
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                              className={`invisible ${
-                                isDark ? "text-gray-400" : ""
-                              } group-hover:visible w-[20px] cursor-pointer`}
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M13.75 7h-3V3.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0L6.2 4.74a.75.75 0 0 0 1.1 1.02l1.95-2.1V7h-3A2.25 2.25 0 0 0 4 9.25v7.5A2.25 2.25 0 0 0 6.25 19h7.5A2.25 2.25 0 0 0 16 16.75v-7.5A2.25 2.25 0 0 0 13.75 7Zm-3 0h-1.5v5.25a.75.75 0 0 0 1.5 0V7Z"
-                                clip-rule="evenodd"
-                              />
-                            </svg>
-                            <svg
-                              onClick={() => deleteNote(note._id)}
-                              className={`invisible group-hover:visible ${
-                                isDark ? "text-gray-400" : ""
-                              } w-[20px] cursor-pointer`}
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                                clip-rule="evenodd"
-                              />
-                            </svg>
+                          <div onClick={() => unarchive(note._id)} className={`invisible group-hover:visible cursor-pointer mt-[4px] ${
+                                    isDark ? "text-gray-400" : ""
+                                  }`}>
+                            <UnarchiveIcon sx={{fontSize: 20}}/>
+                          </div>
+                          <div onClick={() => deleteNote(note._id)} className={`invisible group-hover:visible mt-[4px] ${
+                              isDark ? "text-gray-400" : ""
+                            }`}>
+                            <DeleteIcon sx={{fontSize: 20}}/>
+                          </div>
                           </div>
                         </div>
                       );
